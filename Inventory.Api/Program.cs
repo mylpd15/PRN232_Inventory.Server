@@ -1,9 +1,5 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Inventory.Api;
-using Inventory.Domain;
-using Inventory.Services;
-using Inventory.Services.InventoryService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +9,9 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using Inventory.Api;
+using Inventory.Domain;
+using Inventory.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,8 +82,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-//Add Auto Mapper
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
 // Add Cors
 builder.Services.AddCors(options =>
 {
@@ -132,16 +130,6 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-
-// Add Category Services
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-
-// Add InventoryEntry Services
-builder.Services.AddScoped<IInventoryService, InventoryService>();
-
-// Add Product Services
-builder.Services.AddScoped<IProductService, ProductService>();
-
 
 var app = builder.Build();
 
