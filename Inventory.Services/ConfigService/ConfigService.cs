@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace TeachMate.Services;
+namespace Inventory.Services;
 public class ConfigService : IConfigService
 {
     private readonly IConfiguration _config;

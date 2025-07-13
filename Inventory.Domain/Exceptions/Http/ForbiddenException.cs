@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public class ForbiddenException : Exception
 {
     public ForbiddenException() : base("Forbidden")

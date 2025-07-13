@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
-using TeachMate.Domain;
+using Inventory.Domain;
 
-namespace TeachMate.Services;
+namespace Inventory.Services;
 public class EmailService : IEmailService
 {
     private readonly EmailConfig _emailConfig;

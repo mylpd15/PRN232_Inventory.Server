@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public class UnauthorizedException : Exception
 {
     public UnauthorizedException() : base("Unauthorized")

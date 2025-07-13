@@ -2,10 +2,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using TeachMate.Domain;
+using Inventory.Domain;
 using BC = BCrypt.Net.BCrypt;
 
-namespace TeachMate.Services;
+namespace Inventory.Services;
 public class AuthService : IAuthService
 {
     private readonly IConfigService _configService;

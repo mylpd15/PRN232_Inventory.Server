@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace TeachMate.Domain;
+namespace Inventory.Domain;
 public static class StringExtensions
 {
     public static bool IsEmail(this string input)

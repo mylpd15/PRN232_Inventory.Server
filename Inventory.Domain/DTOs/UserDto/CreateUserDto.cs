@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public class CreateUserDto
 {
     public string Username { get; set; }

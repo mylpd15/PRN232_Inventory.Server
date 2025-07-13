@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using System.Net;
 using System.Text.Json;
-using TeachMate.Domain;
+using Inventory.Domain;
 
-namespace TeachMate.Api;
+namespace Inventory.Api;
 public class GlobalExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;

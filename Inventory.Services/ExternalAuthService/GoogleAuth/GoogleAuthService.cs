@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using TeachMate.Domain;
+using Inventory.Domain;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
 
-namespace TeachMate.Services;
+namespace Inventory.Services;
 public class GoogleAuthService : IGoogleAuthService
 {
     private readonly GoogleAuthConfig _googleAuthConfig;

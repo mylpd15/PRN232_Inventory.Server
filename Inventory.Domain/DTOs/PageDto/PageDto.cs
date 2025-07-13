@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public class PageDto<T>
 {
     public IEnumerable<T> Data { get; init; }

@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public static class AppUserExtensions
 {
     public static string ToCustomRole(this AppUser user)

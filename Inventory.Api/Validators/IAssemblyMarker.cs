@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Api;
+﻿namespace Inventory.Api;
 
 public interface IAssemblyMarker
 {

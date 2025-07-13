@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using TeachMate.Domain;
+using Inventory.Domain;
 
-namespace TeachMate.Api;
+namespace Inventory.Api;
 
 public class CreateUserValidator : AbstractValidator<CreateUserDto>
 {

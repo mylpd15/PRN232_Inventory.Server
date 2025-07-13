@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace TeachMate.Domain;
+namespace Inventory.Domain;
 public class AppUser
 {
     [Key]

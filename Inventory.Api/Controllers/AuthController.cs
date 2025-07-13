@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TeachMate.Domain;
-using TeachMate.Services;
+using Inventory.Domain;
+using Inventory.Services;
 
-namespace TeachMate.Api;
+namespace Inventory.Api;
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase

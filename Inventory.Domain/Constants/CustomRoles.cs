@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public static class CustomRoles
 {
     public const string Admin = nameof(Admin);

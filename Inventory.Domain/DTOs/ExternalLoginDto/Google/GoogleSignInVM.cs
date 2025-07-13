@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TeachMate.Domain;
+namespace Inventory.Domain;
 public class GoogleSignInVM
 {
     [Required]

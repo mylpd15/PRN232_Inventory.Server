@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace TeachMate.Domain;
+namespace Inventory.Domain;
 public class ResponseDto
 {
     public int StatusCode { get; set; }

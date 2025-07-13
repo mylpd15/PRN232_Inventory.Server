@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using TeachMate.Domain;
+using Inventory.Domain;
 
-namespace TeachMate.Services;
+namespace Inventory.Services;
 public class HttpContextService : IHttpContextService
 {
     private AppUser? _appUser;

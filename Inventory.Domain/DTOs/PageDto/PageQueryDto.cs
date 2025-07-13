@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public class PageQueryDto
 {
     public int Page { get; set; } = 1;

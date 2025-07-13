@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TeachMate.Services.Migrations
+namespace Inventory.Services.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration

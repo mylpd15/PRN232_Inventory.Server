@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TeachMate.Domain;
+using Inventory.Domain;
 
-namespace TeachMate.Api;
+namespace Inventory.Api;
 [Authorize(CustomRoles.Admin)]
 [Route("api/[controller]")]
 [ApiController]

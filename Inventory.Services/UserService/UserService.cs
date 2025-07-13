@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TeachMate.Domain;
+using Inventory.Domain;
 using BC = BCrypt.Net.BCrypt;
 
-namespace TeachMate.Services;
+namespace Inventory.Services;
 public class UserService : IUserService
 {
     private readonly DataContext _context;

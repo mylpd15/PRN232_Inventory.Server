@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public class GoogleAuthConfig
 {
     public string ClientId { get; set; }

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using System.Text.Json;
-using TeachMate.Domain;
+using Inventory.Domain;
 
-namespace TeachMate.Api;
+namespace Inventory.Api;
 
 public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
 {

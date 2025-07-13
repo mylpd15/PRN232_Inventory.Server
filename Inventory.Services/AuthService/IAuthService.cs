@@ -1,6 +1,6 @@
-﻿using TeachMate.Domain;
+﻿using Inventory.Domain;
 
-namespace TeachMate.Services;
+namespace Inventory.Services;
 public interface IAuthService
 {
     Task<AppUser> GetMe();

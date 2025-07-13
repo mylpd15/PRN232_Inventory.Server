@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public class ExternalLoginUserInfo
 {
     public string FirstName { get; set; }

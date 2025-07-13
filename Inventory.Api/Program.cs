@@ -9,9 +9,9 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
-using TeachMate.Api;
-using TeachMate.Domain;
-using TeachMate.Services;
+using Inventory.Api;
+using Inventory.Domain;
+using Inventory.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,8 +35,8 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "TeachMate Swagger API",
-        Description = "An ASP.NET Core Web API for TeachMate Web App",
+        Title = "Inventory Swagger API",
+        Description = "An ASP.NET Core Web API for Inventory Web App",
         TermsOfService = new Uri("https://example.com/terms"),
         License = new OpenApiLicense
         {

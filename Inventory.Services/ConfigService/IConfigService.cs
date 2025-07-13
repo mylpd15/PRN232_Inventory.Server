@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Services;
+﻿namespace Inventory.Services;
 
 public interface IConfigService
 {

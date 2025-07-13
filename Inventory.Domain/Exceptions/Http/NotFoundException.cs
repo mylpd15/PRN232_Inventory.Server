@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace Inventory.Domain;
 public class NotFoundException : Exception
 {
     public NotFoundException() : base("NotFound")

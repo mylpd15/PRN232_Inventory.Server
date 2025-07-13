@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TeachMate.Domain;
+using Inventory.Domain;
 
-namespace TeachMate.Services;
+namespace Inventory.Services;
 
 public class DataContext : DbContext
 {
