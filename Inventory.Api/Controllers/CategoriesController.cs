@@ -10,22 +10,22 @@ namespace Inventory.Api
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryService _svc;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ICategoryService svc) => _svc = svc;
+        public CategoriesController(ICategoryService categoryService) => _categoryService = categoryService;
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
-            => Ok(await _svc.GetAllAsync());
+            => Ok(await _categoryService.GetAllAsync());
 
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> Get(Guid id)
-            => (await _svc.GetByIdAsync(id)) is CategoryDto dto ? Ok(dto) : NotFound();
+            => (await _categoryService.GetByIdAsync(id)) is CategoryDto dto ? Ok(dto) : NotFound();
 
         [HttpPost]
         public async Task<IActionResult> Post(CreateCategoryDto dto)
         {
-            var created = await _svc.CreateAsync(dto);
+            var created = await _categoryService.CreateAsync(dto);
             return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
 
@@ -33,11 +33,11 @@ namespace Inventory.Api
         public async Task<IActionResult> Put(Guid id, UpdateCategoryDto dto)
         {
             if (id != dto.Id) return BadRequest();
-            return (await _svc.UpdateAsync(dto)) is CategoryDto updated ? Ok(updated) : NotFound();
+            return (await _categoryService.UpdateAsync(dto)) is CategoryDto updated ? Ok(updated) : NotFound();
         }
 
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
-            => await _svc.DeleteAsync(id) ? NoContent() : NotFound();
+            => await _categoryService.DeleteAsync(id) ? NoContent() : NotFound();
     }
 }
