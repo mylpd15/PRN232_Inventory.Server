@@ -7,8 +7,10 @@ using Inventory.Services.InventoryService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
@@ -21,13 +23,32 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(new ProducesAttribute("application/json", "text/plain", "text/json"));
-}).AddJsonOptions(options =>
+})
+.AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+})
+.AddOData(opt =>
+{
+    var modelBuilder = new ODataConventionModelBuilder();
+
+    modelBuilder.EntitySet<CategoryDto>("Categories");
+    modelBuilder.EntitySet<ProductDto>("Products");
+    modelBuilder.EntitySet<InventoryEntryDto>("Inventories"); 
+
+    var function = modelBuilder.Function("Inventories.History");
+    function.Parameter<Guid>("productId");
+    function.Parameter<int>("page");
+    function.Parameter<int>("take");
+    function.Returns<PageDto<InventoryEntryDto>>();
+
+    opt.AddRouteComponents("odata", modelBuilder.GetEdmModel())
+       .Select().Filter().OrderBy().Expand().SetMaxTop(100).Count().SkipToken();
 });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

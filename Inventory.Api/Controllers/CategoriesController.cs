@@ -2,42 +2,49 @@
 using Inventory.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Inventory.Api
 {
     //[Authorize(CustomRoles.WarehouseStaff)]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoriesController : ControllerBase
+
+    public class CategoriesController : ODataController
     {
         private readonly ICategoryService _categoryService;
 
         public CategoriesController(ICategoryService categoryService) => _categoryService = categoryService;
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-            => Ok(await _categoryService.GetAllAsync());
+        [EnableQuery]
+        public async Task<IActionResult> Get()
+        {
+            var result = await _categoryService.GetAllAsync();
+            return Ok(result);
+        }
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> Get(Guid id)
-            => (await _categoryService.GetByIdAsync(id)) is CategoryDto dto ? Ok(dto) : NotFound();
+        [EnableQuery]
+        public async Task<IActionResult> Get([FromRoute] Guid key)
+        {
+            var result = await _categoryService.GetByIdAsync(key);
+            return result is not null ? Ok(result) : NotFound();
+        }
 
-        [HttpPost]
-        public async Task<IActionResult> Post(CreateCategoryDto dto)
+        public async Task<IActionResult> Post([FromBody] CreateCategoryDto dto)
         {
             var created = await _categoryService.CreateAsync(dto);
-            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
+            return Created(created);
         }
-
-        [HttpPut("{id:guid}")]
-        public async Task<IActionResult> Put(Guid id, UpdateCategoryDto dto)
+        public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] UpdateCategoryDto dto)
         {
-            if (id != dto.Id) return BadRequest();
-            return (await _categoryService.UpdateAsync(dto)) is CategoryDto updated ? Ok(updated) : NotFound();
-        }
+            if (key != dto.Id) return BadRequest();
 
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> Delete(Guid id)
-            => await _categoryService.DeleteAsync(id) ? NoContent() : NotFound();
+            var updated = await _categoryService.UpdateAsync(dto);
+            return updated is not null ? Ok(updated) : NotFound();
+        }
+        public async Task<IActionResult> Delete([FromRoute] Guid key)
+        {
+            var deleted = await _categoryService.DeleteAsync(key);
+            return deleted ? NoContent() : NotFound();
+        }
     }
 }

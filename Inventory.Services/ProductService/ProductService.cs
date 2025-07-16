@@ -36,6 +36,13 @@ namespace Inventory.Services
             var meta = new PageMetaDto(new PageQueryDto { Page = page, Take = take }, total);
             return new PageDto<ProductDto>(data, meta);
         }
+        public IQueryable<ProductDto> GetQueryable()
+        {
+            return _ctx.Products
+                       .Include(p => p.Category) 
+                       .OrderBy(p => p.Name)     
+                       .ProjectTo<ProductDto>(_mapper.ConfigurationProvider);
+        }
 
         public async Task<ProductDto?> GetByIdAsync(Guid id)
         {
