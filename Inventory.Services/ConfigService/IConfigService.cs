@@ -1,4 +1,4 @@
-﻿namespace Inventory.Services;
+﻿namespace WareSync.Services;
 
 public interface IConfigService
 {

@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class ExternalLoginUserInfo
 {
     public string FirstName { get; set; }

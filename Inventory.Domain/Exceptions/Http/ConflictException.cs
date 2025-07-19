@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class ConflictException : Exception
 {
     public ConflictException() : base("Conflict")

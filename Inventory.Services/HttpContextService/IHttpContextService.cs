@@ -1,8 +1,7 @@
-﻿using Inventory.Domain;
+﻿using WareSync.Domain;
 
-namespace Inventory.Services;
+namespace WareSync.Services;
 public interface IHttpContextService
 {
-    Task<AppUser?> GetAppUser();
-    Task<AppUser> GetAppUserAndThrow();
+    Guid? GetUserId();
 }

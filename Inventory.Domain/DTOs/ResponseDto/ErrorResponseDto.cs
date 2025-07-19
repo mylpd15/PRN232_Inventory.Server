@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Inventory.Domain;
+namespace WareSync.Domain;
 public class ErrorResponseDto
 {
     public int StatusCode { get; set; } = (int)HttpStatusCode.BadRequest;

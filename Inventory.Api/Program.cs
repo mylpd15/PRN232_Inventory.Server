@@ -3,30 +3,38 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
-using Inventory.Api;
-using Inventory.Domain;
-using Inventory.Services;
-
+using WareSync.Api;
+using WareSync.Domain;
+using WareSync.Services;
+using WareSync.Repositories;
+using WareSync.Business;
+using AutoMapper;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(options =>
+builder.Services.AddControllers()
+    .AddOData(opt =>
+        opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count()
+        .AddRouteComponents("odata", GetEdmModel())
+    );
+
+IEdmModel GetEdmModel()
 {
-    options.Filters.Add(new ProducesAttribute("application/json", "text/plain", "text/json"));
-}).AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    options.JsonSerializerOptions.WriteIndented = true;
-    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+    var builder = new ODataConventionModelBuilder();
+    builder.EntitySet<WareSync.Domain.AppUser>("AppUsers");
+    // Thêm các entity khác nếu cần
+    return builder.GetEdmModel();
+}
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -129,7 +137,16 @@ builder.Services.AddScoped<IHttpContextService, HttpContextService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
-builder.Services.AddScoped<IUserService, UserService>();
+// Đăng ký các service, repository, business
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserBusiness, UserBusiness>();
+builder.Services.AddScoped<IAuthBusiness, AuthBusiness>();
+builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+builder.Services.AddScoped<IDeliveryBusiness, DeliveryBusiness>();
+builder.Services.AddScoped<IDeliveryDetailRepository, DeliveryDetailRepository>();
+//builder.Services.AddScoped<IDeliveryDetailBusiness, DeliveryDetailBusiness>();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

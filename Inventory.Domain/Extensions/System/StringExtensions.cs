@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Inventory.Domain;
+namespace WareSync.Domain;
 public static class StringExtensions
 {
     public static bool IsEmail(this string input)

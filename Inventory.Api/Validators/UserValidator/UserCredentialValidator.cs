@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Inventory.Domain;
+using WareSync.Domain;
 
-namespace Inventory.Api;
+namespace WareSync.Api;
 
 public class UserCredentialValidator : AbstractValidator<UserCredentialDto>
 {

@@ -1,4 +1,4 @@
-﻿namespace Inventory.Api;
+﻿namespace WareSync.Api;
 
 public interface IAssemblyMarker
 {

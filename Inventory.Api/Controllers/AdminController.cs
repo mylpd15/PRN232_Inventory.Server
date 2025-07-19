@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using WareSync.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Inventory.Domain;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
-namespace Inventory.Api;
+namespace WareSync.Api;
 [Authorize(CustomRoles.Admin)]
-[Route("api/[controller]")]
-[ApiController]
-public class AdminController : ControllerBase
+[Route("odata/[controller]")]
+public class AdminController : ODataController
 {
+    // Thêm các action OData nếu cần
 }

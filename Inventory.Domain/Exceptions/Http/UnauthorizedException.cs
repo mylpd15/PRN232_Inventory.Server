@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class UnauthorizedException : Exception
 {
     public UnauthorizedException() : base("Unauthorized")

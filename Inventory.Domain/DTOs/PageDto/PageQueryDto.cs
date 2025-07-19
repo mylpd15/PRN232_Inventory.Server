@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class PageQueryDto
 {
     public int Page { get; set; } = 1;

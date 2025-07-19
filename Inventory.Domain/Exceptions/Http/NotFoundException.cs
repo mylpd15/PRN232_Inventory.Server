@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class NotFoundException : Exception
 {
     public NotFoundException() : base("NotFound")
