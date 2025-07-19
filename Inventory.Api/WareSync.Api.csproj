@@ -27,10 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Inventory.Business\Inventory.Business.csproj" />
-    <ProjectReference Include="..\Inventory.Domain\Inventory.Domain.csproj" />
-    <ProjectReference Include="..\Inventory.Repositories\Inventory.Repositories.csproj" />
-    <ProjectReference Include="..\Inventory.Services\Inventory.Services.csproj" />
+    <ProjectReference Include="..\Inventory.Business\WareSync.Business.csproj" />
+    <ProjectReference Include="..\Inventory.Domain\WareSync.Domain.csproj" />
+    <ProjectReference Include="..\Inventory.Repositories\WareSync.Repositories.csproj" />
+    <ProjectReference Include="..\Inventory.Services\WareSync.Services.csproj" />
   </ItemGroup>
 
 </Project>
