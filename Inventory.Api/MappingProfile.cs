@@ -28,6 +28,8 @@ public class MappingProfile : Profile
         CreateMap<CreateDeliveryDto, Delivery>()
             .ForMember(dest => dest.DeliveryDetails, opt => opt.MapFrom(src => src.DeliveryDetails));
 
+        CreateMap<UpdateDeliveryDto, Delivery>();
+
         CreateMap<DeliveryDto, Delivery>();
 
         //DeliveryDetail mappings
@@ -37,7 +39,6 @@ public class MappingProfile : Profile
         CreateMap<DeliveryDetailDto, DeliveryDetail>();
 
         CreateMap<CreateDeliveryDetailDto, DeliveryDetail>();
-
         //Product Mapping
         CreateMap<Product, ProductDto>();
     }

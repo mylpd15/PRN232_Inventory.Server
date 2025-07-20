@@ -54,11 +54,15 @@ public class DeliveriesController : ODataController
 
     [HttpPut("{key}")]
     //[Authorize(Roles = CustomRoles.WarehouseManager)]
-    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] CreateDeliveryDto dto)
+    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateDeliveryDto dto)
     {
-        var entity = _mapper.Map<Delivery>(dto);
-        entity.DeliveryID = key;
-        var updated = await _deliveryBusiness.UpdateDeliveryAsync(entity);
+        var existingDelivery = await _deliveryBusiness.GetDeliveryByIdAsync(key);
+        if (existingDelivery == null)
+            return NotFound();
+        _mapper.Map(dto, existingDelivery);
+
+
+        var updated = await _deliveryBusiness.UpdateDeliveryAsync(existingDelivery);
         var result = _mapper.Map<DeliveryDto>(updated);
         return Updated(result);
     }

@@ -15,4 +15,22 @@ public class DeliveryRepository : GenericRepository<Delivery>, IDeliveryReposito
             .ThenInclude(dd => dd.Product)
             .ToListAsync();
     }
-} 
+
+    public async Task<Delivery> UpdateAsync(Delivery delivery)
+    {
+        var existing = await _context.Deliveries
+            .FirstOrDefaultAsync(d => d.DeliveryID == delivery.DeliveryID);
+
+        if (existing == null)
+            throw new Exception($"Delivery with ID {delivery.DeliveryID} not found.");
+
+        // Chỉ cập nhật các thuộc tính của Delivery
+        existing.SalesDate = delivery.SalesDate;
+        existing.CustomerID = delivery.CustomerID;
+
+        await _context.SaveChangesAsync();
+        return existing;
+    }
+
+
+}

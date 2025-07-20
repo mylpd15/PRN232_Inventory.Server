@@ -35,39 +35,6 @@ public class DeliveryBusiness : IDeliveryBusiness
         }
         return delivery;
     }
-    public async Task<Delivery> UpdateDeliveryAsync(int deliveryId, CreateDeliveryDto dto)
-    {
-        var delivery = await _deliveryRepository.GetByIdAsync(deliveryId);
-        if (delivery == null) throw new Exception("Delivery not found");
-
-        delivery.SalesDate = dto.SalesDate;
-        delivery.CustomerID = dto.CustomerID;
-
-        // Xóa các DeliveryDetail cũ
-        var oldDetails = await _deliveryDetailRepository.FindAsync(d => d.DeliveryID == deliveryId);
-        foreach (var detail in oldDetails)
-        {
-            _deliveryDetailRepository.Remove(detail);
-        }
-
-        // Thêm các DeliveryDetail mới
-        delivery.DeliveryDetails = new List<DeliveryDetail>();
-        foreach (var detailDto in dto.DeliveryDetails)
-        {
-            var detail = new DeliveryDetail
-            {
-                ProductID = detailDto.ProductID,
-                DeliveryQuantity = detailDto.DeliveryQuantity,
-                ExpectedDate = detailDto.ExpectedDate,
-                DeliveryID = delivery.DeliveryID
-            };
-            delivery.DeliveryDetails.Add(detail);
-        }
-
-        // ❌ KHÔNG GỌI UpdateAsync vì EF đã tracking
-        await _deliveryRepository.SaveChangesAsync(); // ✅ chỉ cần save
-        return delivery;
-    }
 
     public async Task DeleteDeliveryAsync(int deliveryId)
     {
