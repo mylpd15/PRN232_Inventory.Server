@@ -1,7 +1,7 @@
 using AutoMapper;
 using WareSync.Api.DTOs;
-using WareSync.Domain;
 using WareSync.Business;
+using WareSync.Domain;
 
 namespace WareSync.Api;
 public class MappingProfile : Profile
@@ -23,17 +23,23 @@ public class MappingProfile : Profile
         CreateMap<UpdateCustomerDto, Customer>();
 
         //Delivery mappings
-        CreateMap<Delivery, DeliveryDto>();
+        CreateMap<Delivery, DeliveryDto>()
+            .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.CustomerName))
+            .ForMember(dest => dest.DeliveryDetails, opt => opt.MapFrom(src => src.DeliveryDetails));
         CreateMap<CreateDeliveryDto, Delivery>()
             .ForMember(dest => dest.DeliveryDetails, opt => opt.MapFrom(src => src.DeliveryDetails));
 
         CreateMap<DeliveryDto, Delivery>();
 
         //DeliveryDetail mappings
-        CreateMap<DeliveryDetail, DeliveryDetailDto>();
-        CreateMap<DeliveryDetailDto, DeliveryDetail>()
-     .ForMember(dest => dest.Delivery, opt => opt.Ignore());
+        CreateMap<DeliveryDetail, DeliveryDetailDto>()
+        .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
+
+        CreateMap<DeliveryDetailDto, DeliveryDetail>();
 
         CreateMap<CreateDeliveryDetailDto, DeliveryDetail>();
+
+        //Product Mapping
+        CreateMap<Product, ProductDto>();
     }
-} 
+}
