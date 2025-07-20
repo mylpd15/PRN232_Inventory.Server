@@ -51,4 +51,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         return _dbSet.AsQueryable();
     }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
 } 

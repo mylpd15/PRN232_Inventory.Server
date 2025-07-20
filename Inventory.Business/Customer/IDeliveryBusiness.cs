@@ -8,4 +8,6 @@ public interface IDeliveryBusiness
     Task DeleteDeliveryAsync(int deliveryId);
     Task<Delivery?> GetDeliveryByIdAsync(int deliveryId);
     Task<IEnumerable<Delivery>> GetAllDeliveriesAsync();
+    Task<bool> DeliveryExistsAsync(int deliveryId);
+    Task<IEnumerable<Delivery>> GetDeliveriesByCustomerAsync(int customerId);
 } 

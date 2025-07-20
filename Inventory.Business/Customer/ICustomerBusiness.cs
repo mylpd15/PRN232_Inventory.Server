@@ -8,4 +8,6 @@ public interface ICustomerBusiness
     Task DeleteCustomerAsync(int customerId);
     Task<Domain.Customer?> GetCustomerByIdAsync(int customerId);
     Task<IEnumerable<Domain.Customer>> GetAllCustomersAsync();
+    Task<bool> CustomerExistsAsync(int customerId);
+    Task<bool> CustomerNameExistsAsync(string customerName, int? excludeCustomerId = null);
 } 
