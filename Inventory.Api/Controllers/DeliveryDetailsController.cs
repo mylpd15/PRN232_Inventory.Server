@@ -6,9 +6,10 @@ using WareSync.Api.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.OData.Formatter;
 using WareSync.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WareSync.Api;
-[Route("odata/[controller]")]
+[Route("api/[controller]")]
 public class DeliveryDetailsController : ODataController
 {
     private readonly IDeliveryDetailBusiness _deliveryDetailBusiness;
@@ -18,16 +19,20 @@ public class DeliveryDetailsController : ODataController
         _deliveryDetailBusiness = deliveryDetailBusiness;
         _mapper = mapper;
     }
+
     [EnableQuery]
     [HttpGet]
+    //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager}")]
     public async Task<IActionResult> Get()
     {
         var entities = await _deliveryDetailBusiness.GetAllDeliveryDetailsAsync();
         var dtos = _mapper.Map<IEnumerable<DeliveryDetailDto>>(entities);
         return Ok(dtos);
     }
+
     [EnableQuery]
     [HttpGet("{key}")]
+    //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager}")]
     public async Task<IActionResult> Get([FromODataUri] int key)
     {
         var entity = await _deliveryDetailBusiness.GetDeliveryDetailByIdAsync(key);
@@ -35,14 +40,18 @@ public class DeliveryDetailsController : ODataController
         var dto = _mapper.Map<DeliveryDetailDto>(entity);
         return Ok(dto);
     }
+
     [HttpPost]
+    //[Authorize(Roles = CustomRoles.WarehouseManager)]
     public async Task<IActionResult> Post([FromBody] DeliveryDetailDto dto)
     {
         var entity = _mapper.Map<DeliveryDetail>(dto);
         var created = await _deliveryDetailBusiness.CreateDeliveryDetailAsync(entity);
         return Created(created);
     }
+
     [HttpPut("{key}")]
+    //[Authorize(Roles = CustomRoles.WarehouseManager)]
     public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] DeliveryDetailDto dto)
     {
         var entity = _mapper.Map<DeliveryDetail>(dto);
@@ -50,7 +59,9 @@ public class DeliveryDetailsController : ODataController
         var updated = await _deliveryDetailBusiness.UpdateDeliveryDetailAsync(entity);
         return Updated(updated);
     }
+
     [HttpDelete("{key}")]
+   // [Authorize(Roles = CustomRoles.WarehouseManager)]
     public async Task<IActionResult> Delete([FromODataUri] int key)
     {
         await _deliveryDetailBusiness.DeleteDeliveryDetailAsync(key);
