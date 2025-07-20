@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace TeachMate.Domain;
+namespace WareSync.Domain;
 public class AppUser
 {
     [Key]
@@ -12,5 +12,5 @@ public class AppUser
     [JsonIgnore]
     public string? Password { get; set; }
     public bool IsDisabled { get; set; }
-    public UserRole UserRole { get; set; } = UserRole.Coordinator;
+    public UserRole UserRole { get; set; } = UserRole.WarehouseStaff;
 }

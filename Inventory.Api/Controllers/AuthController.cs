@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TeachMate.Domain;
-using TeachMate.Services;
+using WareSync.Domain;
+using WareSync.Business;
 
-namespace TeachMate.Api;
+namespace WareSync.Api;
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
+    private readonly IAuthBusiness _authBusiness;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthBusiness authBusiness)
     {
-        _authService = authService;
+        _authBusiness = authBusiness;
     }
 
     /// <summary>
@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
     [HttpPost("Login")]
     public async Task<ActionResult<LoginPayloadDto>> Login(UserCredentialDto dto)
     {
-        return Ok(await _authService.Login(dto));
+        return Ok(await _authBusiness.Login(dto));
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class AuthController : ControllerBase
     [HttpPost("GoogleSignIn")]
     public async Task<ActionResult<LoginPayloadDto>> GoogleSignIn(GoogleSignInVM dto)
     {
-        return Ok(await _authService.SignInWithGoogle(dto));
+        return Ok(await _authBusiness.SignInWithGoogle(dto));
     }
 
     /// <summary>
@@ -38,15 +38,15 @@ public class AuthController : ControllerBase
     [HttpPost("SignUp")]
     public async Task<ActionResult<LoginPayloadDto>> Signup(CreateUserDto dto)
     {
-        return Ok(await _authService.Signup(dto));
+        return Ok(await _authBusiness.Signup(dto));
     }
 
     /// <summary>
-	/// Get Current User
-	/// </summary>
+    /// Get Current User
+    /// </summary>
     [HttpGet("Me")]
     public async Task<ActionResult<AppUser>> GetMe()
     {
-        return Ok(await _authService.GetMe());
+        return Ok(await _authBusiness.GetMe());
     }
 }

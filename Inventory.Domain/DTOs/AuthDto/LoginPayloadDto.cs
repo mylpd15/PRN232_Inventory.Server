@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace WareSync.Domain;
 public class LoginPayloadDto
 {
     public TokenPayloadDto AccessToken { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace WareSync.Domain;
 public class UnauthorizedException : Exception
 {
     public UnauthorizedException() : base("Unauthorized")

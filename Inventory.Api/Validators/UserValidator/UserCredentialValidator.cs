@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using TeachMate.Domain;
+using WareSync.Domain;
 
-namespace TeachMate.Api;
+namespace WareSync.Api;
 
 public class UserCredentialValidator : AbstractValidator<UserCredentialDto>
 {

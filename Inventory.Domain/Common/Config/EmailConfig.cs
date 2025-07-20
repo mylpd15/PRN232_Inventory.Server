@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace WareSync.Domain;
 public class EmailConfig
 {
     public string AppEmail { get; set; }

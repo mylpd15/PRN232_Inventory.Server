@@ -1,0 +1,97 @@
+using WareSync.Domain;
+using WareSync.Repositories;
+using WareSync.Business;
+
+namespace WareSync.Business;
+public class DeliveryBusiness : IDeliveryBusiness
+{
+    private readonly IDeliveryRepository _deliveryRepository;
+    private readonly IDeliveryDetailRepository _deliveryDetailRepository;
+    public DeliveryBusiness(IDeliveryRepository deliveryRepository, IDeliveryDetailRepository deliveryDetailRepository)
+    {
+        _deliveryRepository = deliveryRepository;
+        _deliveryDetailRepository = deliveryDetailRepository;
+    }
+    public async Task<Delivery> CreateDeliveryAsync(CreateDeliveryDto dto)
+    {
+        var delivery = new Delivery
+        {
+            SalesDate = dto.SalesDate,
+            CustomerID = dto.CustomerID,
+            DeliveryDetails = new List<DeliveryDetail>()
+        };
+        await _deliveryRepository.AddAsync(delivery);
+        foreach (var detailDto in dto.DeliveryDetails)
+        {
+            var detail = new DeliveryDetail
+            {
+                ProductID = detailDto.ProductID,
+                DeliveryQuantity = detailDto.DeliveryQuantity,
+                ExpectedDate = detailDto.ExpectedDate,
+                DeliveryID = delivery.DeliveryID
+            };
+            await _deliveryDetailRepository.AddAsync(detail);
+            delivery.DeliveryDetails.Add(detail);
+        }
+        return delivery;
+    }
+    public async Task<Delivery> UpdateDeliveryAsync(int deliveryId, CreateDeliveryDto dto)
+    {
+        var delivery = await _deliveryRepository.GetByIdAsync(deliveryId);
+        if (delivery == null) throw new Exception("Delivery not found");
+        delivery.SalesDate = dto.SalesDate;
+        delivery.CustomerID = dto.CustomerID;
+        var oldDetails = await _deliveryDetailRepository.FindAsync(d => d.DeliveryID == deliveryId);
+        foreach (var detail in oldDetails)
+        {
+            _deliveryDetailRepository.Remove(detail);
+        }
+        delivery.DeliveryDetails = new List<DeliveryDetail>();
+        foreach (var detailDto in dto.DeliveryDetails)
+        {
+            var detail = new DeliveryDetail
+            {
+                ProductID = detailDto.ProductID,
+                DeliveryQuantity = detailDto.DeliveryQuantity,
+                ExpectedDate = detailDto.ExpectedDate,
+                DeliveryID = delivery.DeliveryID
+            };
+            await _deliveryDetailRepository.AddAsync(detail);
+            delivery.DeliveryDetails.Add(detail);
+        }
+        await _deliveryRepository.UpdateAsync(delivery);
+        return delivery;
+    }
+    public async Task DeleteDeliveryAsync(int deliveryId)
+    {
+        var delivery = await _deliveryRepository.GetByIdAsync(deliveryId);
+        if (delivery != null)
+        {
+            var details = await _deliveryDetailRepository.FindAsync(d => d.DeliveryID == deliveryId);
+            foreach (var detail in details)
+            {
+                _deliveryDetailRepository.Remove(detail);
+            }
+            _deliveryRepository.Remove(delivery);
+        }
+    }
+    public async Task<Delivery?> GetDeliveryByIdAsync(int deliveryId)
+    {
+        return await _deliveryRepository.GetByIdAsync(deliveryId);
+    }
+    public async Task<IEnumerable<Delivery>> GetAllDeliveriesAsync()
+    {
+        return await _deliveryRepository.GetAllAsync();
+    }
+    // CRUD cũ giữ lại cho các trường hợp khác
+    public async Task<Delivery> CreateDeliveryAsync(Delivery delivery)
+    {
+        await _deliveryRepository.AddAsync(delivery);
+        return delivery;
+    }
+    public async Task<Delivery> UpdateDeliveryAsync(Delivery delivery)
+    {
+        await _deliveryRepository.UpdateAsync(delivery);
+        return delivery;
+    }
+} 

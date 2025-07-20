@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace WareSync.Domain;
 public class ConflictException : Exception
 {
     public ConflictException() : base("Conflict")

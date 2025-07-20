@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using System.Net;
 using System.Text.Json;
-using TeachMate.Domain;
+using WareSync.Domain;
 
-namespace TeachMate.Api;
+namespace WareSync.Api;
 public class GlobalExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;

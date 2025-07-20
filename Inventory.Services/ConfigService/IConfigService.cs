@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Services;
+﻿namespace WareSync.Services;
 
 public interface IConfigService
 {

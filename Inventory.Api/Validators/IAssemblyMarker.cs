@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Api;
+﻿namespace WareSync.Api;
 
 public interface IAssemblyMarker
 {

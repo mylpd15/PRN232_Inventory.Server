@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace WareSync.Domain;
 public class GoogleAuthConfig
 {
     public string ClientId { get; set; }

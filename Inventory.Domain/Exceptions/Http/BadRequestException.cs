@@ -1,4 +1,4 @@
-﻿namespace TeachMate.Domain;
+﻿namespace WareSync.Domain;
 public class BadRequestException : Exception
 {
     public BadRequestException() : base("BadRequest")

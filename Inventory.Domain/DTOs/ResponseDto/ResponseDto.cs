@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace TeachMate.Domain;
+namespace WareSync.Domain;
 public class ResponseDto
 {
     public int StatusCode { get; set; }

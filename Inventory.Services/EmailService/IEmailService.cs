@@ -1,6 +1,6 @@
-﻿using TeachMate.Domain;
+﻿using WareSync.Domain;
 
-namespace TeachMate.Services;
+namespace WareSync.Services;
 public interface IEmailService
 {
     void SendTestEmail(AppUser user);
