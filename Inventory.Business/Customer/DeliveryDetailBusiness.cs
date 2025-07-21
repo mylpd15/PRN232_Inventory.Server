@@ -31,18 +31,42 @@ public class DeliveryDetailBusiness : IDeliveryDetailBusiness
         // Transaction start
         try
         {
-            // Check product existence
-            var product = await _productBusiness.GetProductByIdAsync(detail.ProductID);
-            if (product == null)
-                throw new InvalidOperationException($"Product with ID {detail.ProductID} does not exist.");
-            // Check inventory
-            var inventory = (await _inventoryBusiness.GetAllInventoriesAsync()).FirstOrDefault(i => i.ProductID == detail.ProductID);
-            if (inventory == null || inventory.QuantityAvailable < detail.DeliveryQuantity)
-                throw new InvalidOperationException($"Not enough inventory for product {detail.ProductID}.");
-            // Subtract inventory
-            inventory.QuantityAvailable -= detail.DeliveryQuantity;
-            await _inventoryBusiness.UpdateInventoryAsync(inventory);
-            return await _deliveryDetailRepository.AddAsync(detail);
+                // Check if a detail with the same product already exists in this delivery
+            var existingDetail = (await _deliveryDetailRepository.FindAsync(d => d.DeliveryID == detail.DeliveryID && d.ProductID == detail.ProductID)).FirstOrDefault();
+            if (existingDetail != null)
+            {
+                // Update the quantity instead of creating a new record
+                var newQuantity = existingDetail.DeliveryQuantity + detail.DeliveryQuantity;
+                // Check product existence
+                var product = await _productBusiness.GetProductByIdAsync(detail.ProductID);
+                if (product == null)
+                    throw new InvalidOperationException($"Product with ID {detail.ProductID} does not exist.");
+                // Check inventory
+                var inventory = (await _inventoryBusiness.GetAllInventoriesAsync()).FirstOrDefault(i => i.ProductID == detail.ProductID);
+                if (inventory == null || inventory.QuantityAvailable < detail.DeliveryQuantity)
+                    throw new InvalidOperationException($"Not enough inventory for product {detail.ProductID}.");
+                // Subtract inventory for the new quantity being added
+                inventory.QuantityAvailable -= detail.DeliveryQuantity;
+                await _inventoryBusiness.UpdateInventoryAsync(inventory);
+                existingDetail.DeliveryQuantity = newQuantity;
+                await _deliveryDetailRepository.UpdateAsync(existingDetail);
+                return existingDetail;
+            }
+            else
+            {
+                // Check product existence
+                var product = await _productBusiness.GetProductByIdAsync(detail.ProductID);
+                if (product == null)
+                    throw new InvalidOperationException($"Product with ID {detail.ProductID} does not exist.");
+                // Check inventory
+                var inventory = (await _inventoryBusiness.GetAllInventoriesAsync()).FirstOrDefault(i => i.ProductID == detail.ProductID);
+                if (inventory == null || inventory.QuantityAvailable < detail.DeliveryQuantity)
+                    throw new InvalidOperationException($"Not enough inventory for product {detail.ProductID}.");
+                // Subtract inventory
+                inventory.QuantityAvailable -= detail.DeliveryQuantity;
+                await _inventoryBusiness.UpdateInventoryAsync(inventory);
+                return await _deliveryDetailRepository.AddAsync(detail);
+            }
         }
         catch
         {
@@ -88,7 +112,16 @@ public class DeliveryDetailBusiness : IDeliveryDetailBusiness
                 inventory.QuantityAvailable += diff;
                 await _inventoryBusiness.UpdateInventoryAsync(inventory);
             }
-            return await _deliveryDetailRepository.UpdateAsync(detail);
+            //return await _deliveryDetailRepository.UpdateAsync(detail);
+            // Only update the tracked entity
+            if (detail.ExpectedDate <= DateTime.UtcNow)
+                throw new InvalidOperationException("ExpectedDate must be in the future.");
+            existing.DeliveryQuantity = detail.DeliveryQuantity;
+            existing.ExpectedDate = detail.ExpectedDate;
+            existing.ActualDate = detail.ActualDate;
+            // ... update other fields if needed ...
+            await _deliveryDetailRepository.UpdateAsync(existing);
+            return existing;
         }
         catch
         {
