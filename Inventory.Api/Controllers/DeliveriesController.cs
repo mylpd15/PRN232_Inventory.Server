@@ -24,11 +24,9 @@ public class DeliveriesController : ODataController
     [EnableQuery]
     [HttpGet]
     //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager}")]
-    public async Task<IActionResult> Get()
+    public IQueryable<Delivery> Get()
     {
-        var deliveries = await _deliveryBusiness.GetAllDeliveriesAsync();
-        var dtos = _mapper.Map<IEnumerable<DeliveryDto>>(deliveries);
-        return Ok(dtos);
+        return _deliveryBusiness.GetAllDeliveriesAsync();
     }
 
     [EnableQuery]
@@ -46,9 +44,7 @@ public class DeliveriesController : ODataController
     //[Authorize(Roles = CustomRoles.WarehouseManager)]
     public async Task<IActionResult> Post([FromBody] CreateDeliveryDto dto)
     {
-        var entity = _mapper.Map<Delivery>(dto);
-        var created = await _deliveryBusiness.CreateDeliveryAsync(entity);
-        //var result = _mapper.Map<DeliveryDto>(created);
+        var created = await _deliveryBusiness.CreateDeliveryAsync(dto);
         return Created(created);
     }
 
@@ -56,22 +52,16 @@ public class DeliveriesController : ODataController
     //[Authorize(Roles = CustomRoles.WarehouseManager)]
     public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateDeliveryDto dto)
     {
-        var existingDelivery = await _deliveryBusiness.GetDeliveryByIdAsync(key);
-        if (existingDelivery == null)
-            return NotFound();
-        _mapper.Map(dto, existingDelivery);
-
-
-        var updated = await _deliveryBusiness.UpdateDeliveryAsync(existingDelivery);
+        var updated = await _deliveryBusiness.UpdateDeliveryAsync(dto, key);
         var result = _mapper.Map<DeliveryDto>(updated);
         return Updated(result);
     }
 
-    [HttpDelete("{key}")]
+/*    [HttpDelete("{key}")]
     //[Authorize(Roles = CustomRoles.WarehouseManager)]
     public async Task<IActionResult> Delete([FromODataUri] int key)
     {
         await _deliveryBusiness.DeleteDeliveryAsync(key);
         return NoContent();
-    }
+    }*/
 } 

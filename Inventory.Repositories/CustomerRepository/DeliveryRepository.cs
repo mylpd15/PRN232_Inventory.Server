@@ -6,6 +6,16 @@ public class DeliveryRepository : GenericRepository<Delivery>, IDeliveryReposito
 {
     private readonly DataContext _context;
     public DeliveryRepository(DataContext context) : base(context) { _context = context; }
+
+    public IQueryable<Delivery> GetAllDeliveriesWithDetails()
+    {
+        return _context.Deliveries
+            .Include(d => d.Customer)
+            .Include(d => d.DeliveryDetails)
+                .ThenInclude(dd => dd.Product);
+    }
+
+
     // Thêm các method đặc thù nếu cần
     public async Task<IEnumerable<Delivery>> GetAllDeliveriesWithDetailsAsync()
     {
@@ -15,6 +25,16 @@ public class DeliveryRepository : GenericRepository<Delivery>, IDeliveryReposito
             .ThenInclude(dd => dd.Product)
             .ToListAsync();
     }
+
+public async Task<Delivery> GetByDeliveryIdAsync(int deliveryId)
+{
+    return await _context.Deliveries
+        .Include(d => d.Customer)
+        .Include(d => d.DeliveryDetails)
+            .ThenInclude(dd => dd.Product)
+        .FirstOrDefaultAsync(d => d.DeliveryID == deliveryId);
+}
+
 
     public async Task<Delivery> UpdateAsync(Delivery delivery)
     {

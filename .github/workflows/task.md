@@ -3,23 +3,22 @@
 []-[~]-[!]-[*] each will be todo-in progress - done -  blocked respectively
 - Tracking and coming back here to update status of each task when task changes
 # Note:
-This is db image for you to review easily  ![alt text](image.png)
-The model mapping with db you can view in Inventory.Domain/Models/Customer
-    There are Customer.cs, Delivery.cs and DeliveryDetail.cs inside this. Please follow the model not add any new fields for this please
-Adding method for repo inside existed interface repo and repo implementation in Inventory.Repository/CustomerRepository
-Adding Dto and business inside existed folder Inventory.Business/Customer
+![db diagram](image.png)
 # This is your task
-[*] Gửi tới Customer nào (Customer, Delivery, DeliveryDetail)
-[*] CRUD Customer (Xem: Sales Staff, crud admin)
-[*] CRUD Delivery (xem, update: delivery, update;Warehouse Manager) 
-[*] Do you think with tasks above, I needing to adding some validation or constraint for them
-[] Severity	Code	Description	Project	File	Line	Suppression State	Details
-Error	CS1061	'IDeliveryDetailRepository' does not contain a definition for 'DeleteAsync' and no accessible extension method 'DeleteAsync' accepting a first argument of type 'IDeliveryDetailRepository' could be found (are you missing a using directive or an assembly reference?)	WareSync.Business	D:\FPTU\SU25\PRN232\FinalProject\PRN232_Inventory.Server\Inventory.Business\Customer\DeliveryDetailBusiness.cs	29	Active	
-
-
-
-
+[!] Khi add new delivery thì delivery detail không được trống (khi đó sẽ ktra product exist và  QuantityAvailable trong inventories có đủ không rồi trừ đi QuantityAvailable trong inventories) 
+[!] khi update delivery mà delivery status là 4 (cancelled) thì tự động lấy các số lượng quantity của các deliverydetail mà có delivery id là trùng cộng lại cho QuantityAvailable bảng inventories
+[!] không cho xoá delivery, dùng api update đổi status là 4
+[!] khi add một delivery detail vào trong delivery thì sẽ ktra product exist và  QuantityAvailable trong inventories có đủ không rồi trừ đi QuantityAvailable trong inventories
+[!] khi update một delivery detail mà update số lượng lớn hơn số ban đầu thì ktra số thay đổi của delivery detail có còn đủ không trong rồi trừ đi QuantityAvailable trong inventories (ví dụ thay đổi từ 2 sang 3 thì xem còn đủ 1 trong inventories không)
+[!] khi update một delivery detail mà update số lượng nhỏ hơn số ban đầu thì cộng vào QuantityAvailable trong inventories (ví dụ từ 2 sang 1 )
+[!] khi xoá một delivery detail thì cộng hết số lượng vào lại QuantityAvailable trong inventories 
+[!] nếu mà delivery status là 2 (delivered và shipped) thì không cho update các delivery detail và cả delivery là customer id
+[] Khi mà tạo mới delivery detail thì cần kiểm tra xem delivery id có status là pending thì mới cho tạo và ExpectedDate là tương lai.
+[!] Khi update delivery detail thì cần  kiểm tra xem delivery id có status là pending thì mới cho update 
+[!] Và đối với các tác vụ thêm, sửa, xóa của delivery và delivery detail bạn có thể thêm transaction roll back cho tôi được không
+[] Nếu khi tạo mới một  delivery detail mà product id đó đã có sẵn trong delivery đó rồi thì thay vì tạo mới hãy update deliveryQuantity của delivery detail có product ID trong delivery đó
 
 
 # Warning:
 - If you dont understand or concern at something, please raise question before doing 
+- Before execute, please ask me make sure to do it

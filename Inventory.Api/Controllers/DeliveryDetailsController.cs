@@ -20,7 +20,7 @@ public class DeliveryDetailsController : ODataController
         _mapper = mapper;
     }
 
-    [EnableQuery]
+   /* [EnableQuery]
     [HttpGet]
     //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager}")]
     public async Task<IActionResult> Get()
@@ -39,11 +39,11 @@ public class DeliveryDetailsController : ODataController
         if (entity == null) return NotFound();
         var dto = _mapper.Map<DeliveryDetailDto>(entity);
         return Ok(dto);
-    }
+    }*/
 
     [HttpPost]
     //[Authorize(Roles = CustomRoles.WarehouseManager)]
-    public async Task<IActionResult> Post([FromBody] DeliveryDetailDto dto)
+    public async Task<IActionResult> Post([FromBody] DeliveryDetailCreateDto dto)
     {
         var entity = _mapper.Map<DeliveryDetail>(dto);
         var created = await _deliveryDetailBusiness.CreateDeliveryDetailAsync(entity);
@@ -52,7 +52,7 @@ public class DeliveryDetailsController : ODataController
 
     [HttpPut("{key}")]
     //[Authorize(Roles = CustomRoles.WarehouseManager)]
-    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] DeliveryDetailDto dto)
+    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] DeliveryDetailUpdateDto dto)
     {
         var entity = _mapper.Map<DeliveryDetail>(dto);
         entity.DeliveryDetailID = key;
