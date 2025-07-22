@@ -23,11 +23,10 @@ public class CustomersController : ODataController
     [EnableQuery]
     [HttpGet]
    // [Authorize(Roles = $"{CustomRoles.Admin},{CustomRoles.SalesStaff}")]
-    public async Task<IActionResult> Get()
+    public IQueryable<Customer> Get()
     {
-        var customers = await _customerBusiness.GetAllCustomersAsync();
-        var dtos = _mapper.Map<IEnumerable<CustomerDto>>(customers);
-        return Ok(dtos);
+        return _customerBusiness.GetAllCustomersAsync();
+       
     }
 
     [EnableQuery]

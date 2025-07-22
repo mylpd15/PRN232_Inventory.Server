@@ -25,6 +25,7 @@ public class MappingProfile : Profile
         //Delivery mappings
         CreateMap<Delivery, DeliveryDto>()
             .ForMember(dest => dest.DeliveryDetails, opt => opt.MapFrom(src => src.DeliveryDetails));
+
         CreateMap<CreateDeliveryDto, Delivery>()
             .ForMember(dest => dest.DeliveryDetails, opt => opt.MapFrom(src => src.DeliveryDetails));
 
@@ -34,9 +35,11 @@ public class MappingProfile : Profile
 
         //DeliveryDetail mappings
         CreateMap<DeliveryDetail, DeliveryDetailDto>()
-        .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
+         .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
 
         CreateMap<DeliveryDetailDto, DeliveryDetail>();
+        CreateMap<DeliveryDetailCreateDto, DeliveryDetail>();
+        CreateMap<DeliveryDetailUpdateDto, DeliveryDetail>();
 
         CreateMap<CreateDeliveryDetailDto, DeliveryDetail>();
         //Product Mapping

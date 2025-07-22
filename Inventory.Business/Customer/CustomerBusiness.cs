@@ -64,9 +64,9 @@ public class CustomerBusiness : ICustomerBusiness
         return await _customerRepository.GetByIdAsync(customerId);
     }
 
-    public async Task<IEnumerable<WareSync.Domain.Customer>> GetAllCustomersAsync()
+    public IQueryable<Domain.Customer> GetAllCustomersAsync()
     {
-        return await _customerRepository.GetAllAsync();
+        return _customerRepository.GetAllCsutomers();
     }
 
     public async Task<bool> CustomerExistsAsync(int customerId)
