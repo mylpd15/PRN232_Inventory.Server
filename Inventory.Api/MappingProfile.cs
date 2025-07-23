@@ -47,5 +47,14 @@ public class MappingProfile : Profile
         CreateMap<Product, ProductDto>();
         CreateMap<CreateProductDto, Product>();
         CreateMap<UpdateProductDto, Product>();
+
+        // Inventory Mapping
+        CreateMap<Inventory, InventoryDto>()
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product!.ProductName))
+            .ForMember(dest => dest.WarehouseName, opt => opt.MapFrom(src => src.Warehouse!.WarehouseName));
+
+        CreateMap<CreateInventoryDto, Inventory>();
+        CreateMap<UpdateInventoryDto, Inventory>();
+
     }
 }

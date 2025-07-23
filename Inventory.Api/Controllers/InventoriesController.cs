@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
@@ -36,21 +37,23 @@ public class InventoriesController : ODataController
         return Ok(dto);
     }
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] InventoryDto inventoryDto)
+    public async Task<IActionResult> Post([FromBody] CreateInventoryDto inventoryDto)
     {
         var inventory = _mapper.Map<Inventory>(inventoryDto);
         var created = await _inventoryBusiness.CreateInventoryAsync(inventory);
-        return Created(created);
+        var resultDto = _mapper.Map<InventoryDto>(created);
+        return Created(resultDto);
     }
     [HttpPut("{key}")]
-    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] InventoryDto inventoryDto)
+    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateInventoryDto inventoryDto)
     {
         if (key != inventoryDto.InventoryID)
             return BadRequest("Inventory ID mismatch");
 
         var inventory = _mapper.Map<Inventory>(inventoryDto);
         var updated = await _inventoryBusiness.UpdateInventoryAsync(inventory);
-        return Updated(updated);
+        var resultDto = _mapper.Map<InventoryDto>(updated);
+        return Updated(resultDto);
     }
     [HttpDelete("{key}")]
     public async Task<IActionResult> Delete([FromODataUri] int key)
