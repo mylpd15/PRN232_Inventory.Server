@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WareSync.Domain;
 
-namespace WareSync.Repositories.InventoryRepository;
+namespace WareSync.Repositories;
 public class InventoryRepository : GenericRepository<Inventory>, IInventoryRepository
 {
    

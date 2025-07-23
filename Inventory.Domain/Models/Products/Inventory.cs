@@ -17,4 +17,6 @@ public class Inventory : AuditableEntity
     public int WarehouseID { get; set; }
     [ForeignKey("WarehouseID")]
     public Warehouse? Warehouse { get; set; }
-} 
+    public ICollection<InventoryLog>? InventoryLogs { get; set; }
+
+}

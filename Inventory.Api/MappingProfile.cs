@@ -56,5 +56,10 @@ public class MappingProfile : Profile
         CreateMap<CreateInventoryDto, Inventory>();
         CreateMap<UpdateInventoryDto, Inventory>();
 
+        // InventoryLog Mapping
+        CreateMap<InventoryLog, InventoryLogDto>();
+        CreateMap<CreateInventoryLogDto, InventoryLog>();
+
+
     }
 }

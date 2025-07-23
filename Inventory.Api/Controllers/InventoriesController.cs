@@ -9,7 +9,7 @@ using WareSync.Business;
 using WareSync.Domain;
 
 namespace WareSync.Api;
-[Route("odata/[controller]")]
+[Route("api/[controller]")]
 public class InventoriesController : ODataController
 {
     private readonly IInventoryBusiness _inventoryBusiness;
