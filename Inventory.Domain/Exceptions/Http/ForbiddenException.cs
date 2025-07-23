@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class ForbiddenException : Exception
 {
     public ForbiddenException() : base("Forbidden")

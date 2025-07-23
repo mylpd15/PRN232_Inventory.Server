@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using System.Text.Json;
-using Inventory.Domain;
+using WareSync.Domain;
 
-namespace Inventory.Api;
+namespace WareSync.Api;
 
 public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
 {

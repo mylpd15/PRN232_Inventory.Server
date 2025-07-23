@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using System.Net;
 using System.Text.Json;
-using Inventory.Domain;
+using WareSync.Domain;
 
-namespace Inventory.Api;
+namespace WareSync.Api;
 public class GlobalExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;

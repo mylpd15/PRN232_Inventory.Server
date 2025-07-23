@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
-using Inventory.Domain;
+using WareSync.Domain;
 
-namespace Inventory.Services;
+namespace WareSync.Services;
 public class EmailService : IEmailService
 {
     private readonly EmailConfig _emailConfig;

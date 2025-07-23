@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using Inventory.Domain;
+using WareSync.Domain;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
 
-namespace Inventory.Services;
+namespace WareSync.Services;
 public class GoogleAuthService : IGoogleAuthService
 {
     private readonly GoogleAuthConfig _googleAuthConfig;

@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class TokenPayloadDto
 {
     public int ExpiresIn { get; set; } = 3600;

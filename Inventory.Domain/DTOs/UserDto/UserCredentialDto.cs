@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class UserCredentialDto
 {
     public string Username { get; set; } = string.Empty;

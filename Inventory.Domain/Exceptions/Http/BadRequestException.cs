@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class BadRequestException : Exception
 {
     public BadRequestException() : base("BadRequest")

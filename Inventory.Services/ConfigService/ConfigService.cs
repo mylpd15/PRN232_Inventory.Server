@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Inventory.Services;
+namespace WareSync.Services;
 public class ConfigService : IConfigService
 {
     private readonly IConfiguration _config;

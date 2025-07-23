@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public class LoginPayloadDto
 {
     public TokenPayloadDto AccessToken { get; set; }

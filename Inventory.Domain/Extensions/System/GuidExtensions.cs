@@ -1,4 +1,4 @@
-﻿namespace Inventory.Domain;
+﻿namespace WareSync.Domain;
 public static class GuidExtensions
 {
     public static bool IsNullOrEmpty(this Guid? guid)
