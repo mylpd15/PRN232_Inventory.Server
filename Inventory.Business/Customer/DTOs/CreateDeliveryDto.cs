@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace WareSync.Business;
 public class CreateDeliveryDto
 {

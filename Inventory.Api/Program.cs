@@ -18,6 +18,8 @@ using WareSync.Services;
 using WareSync.Repositories;
 using WareSync.Business;
 using AutoMapper;
+using WareSync.Repositories.ProductRepository;
+using WareSync.Repositories.InventoryRepository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -32,6 +34,9 @@ IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
     builder.EntitySet<WareSync.Domain.AppUser>("AppUsers");
+    builder.EntitySet<Customer>("Customers");
+    builder.EntitySet<Delivery>("Deliveries"); 
+    builder.EntitySet<DeliveryDetail>("DeliveryDetails");
     // Thêm các entity khác nếu cần
     return builder.GetEdmModel();
 }
@@ -141,10 +146,16 @@ builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserBusiness, UserBusiness>();
 builder.Services.AddScoped<IAuthBusiness, AuthBusiness>();
+builder.Services.AddScoped<ICustomerBusiness, CustomerBusiness>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IDeliveryBusiness, DeliveryBusiness>();
 builder.Services.AddScoped<IDeliveryDetailRepository, DeliveryDetailRepository>();
-//builder.Services.AddScoped<IDeliveryDetailBusiness, DeliveryDetailBusiness>();
+builder.Services.AddScoped<IDeliveryDetailBusiness, DeliveryDetailBusiness>();
+builder.Services.AddScoped<IProductBusiness, ProductBusiness>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IInventoryBusiness, InventoryBusiness>();
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
