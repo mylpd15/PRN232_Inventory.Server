@@ -37,6 +37,7 @@ IEdmModel GetEdmModel()
     builder.EntitySet<Customer>("Customers");
     builder.EntitySet<Delivery>("Deliveries"); 
     builder.EntitySet<DeliveryDetail>("DeliveryDetails");
+    builder.EntitySet<Product>("Products");
     // Thêm các entity khác nếu cần
     return builder.GetEdmModel();
 }

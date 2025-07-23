@@ -36,19 +36,21 @@ public class ProductsController : ODataController
         return Ok(dto);
     }
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] ProductDto productDto)
+    public async Task<IActionResult> Post([FromBody] CreateProductDto productDto)
     {
         var product = _mapper.Map<Product>(productDto);
         var created = await _productBusiness.CreateProductAsync(product);
-        return Created(created);
+        var resultDto = _mapper.Map<ProductDto>(created);   
+        return Created(resultDto);
     }
     [HttpPut("{key}")]
-    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] ProductDto productDto)
+    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateProductDto productDto)
     {
         if (key != productDto.ProductID) return BadRequest("ID mismatch");
         var product = _mapper.Map<Product>(productDto);
         var updated = await _productBusiness.UpdateProductAsync(product);
-        return Updated(updated);
+        var resultDto = _mapper.Map<ProductDto>(updated);
+        return Updated(resultDto);
     }
     [HttpDelete("{key}")]
     public async Task<IActionResult> Delete([FromODataUri] int key)

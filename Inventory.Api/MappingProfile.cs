@@ -42,7 +42,10 @@ public class MappingProfile : Profile
         CreateMap<DeliveryDetailUpdateDto, DeliveryDetail>();
 
         CreateMap<CreateDeliveryDetailDto, DeliveryDetail>();
+
         //Product Mapping
         CreateMap<Product, ProductDto>();
+        CreateMap<CreateProductDto, Product>();
+        CreateMap<UpdateProductDto, Product>();
     }
 }
