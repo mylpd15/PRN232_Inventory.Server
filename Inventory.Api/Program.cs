@@ -19,7 +19,7 @@ using WareSync.Repositories;
 using WareSync.Business;
 using AutoMapper;
 using WareSync.Repositories.ProductRepository;
-using WareSync.Repositories.InventoryRepository;
+using WareSync.Api.DTOs;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -37,6 +37,9 @@ IEdmModel GetEdmModel()
     builder.EntitySet<Customer>("Customers");
     builder.EntitySet<Delivery>("Deliveries"); 
     builder.EntitySet<DeliveryDetail>("DeliveryDetails");
+    builder.EntitySet<ProductDto>("Products");
+    builder.EntitySet<InventoryDto>("Inventories");
+    builder.EntitySet<InventoryLogDto>("InventoryLogs");
     // Thêm các entity khác nếu cần
     return builder.GetEdmModel();
 }
@@ -156,6 +159,9 @@ builder.Services.AddScoped<IProductBusiness, ProductBusiness>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IInventoryBusiness, InventoryBusiness>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryLogBusiness, InventoryLogBusiness>();
+builder.Services.AddScoped<IInventoryLogRepository, InventoryLogRepository>();
+
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
