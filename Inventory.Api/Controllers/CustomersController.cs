@@ -46,7 +46,6 @@ public class CustomersController : ODataController
     {
         var entity = _mapper.Map<Customer>(dto);
         var created = await _customerBusiness.CreateCustomerAsync(entity);
-       /* var result = _mapper.Map<CustomerDto>(created);*/
         return Created(created);
     }
 
@@ -57,7 +56,6 @@ public class CustomersController : ODataController
         var entity = _mapper.Map<Customer>(dto);
         entity.CustomerID = key;
         var updated = await _customerBusiness.UpdateCustomerAsync(entity);
-        /*var result = _mapper.Map<CustomerDto>(updated);*/
         return Updated(updated);
     }
 

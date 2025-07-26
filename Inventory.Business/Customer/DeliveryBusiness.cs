@@ -27,7 +27,7 @@ public class DeliveryBusiness : IDeliveryBusiness
             CustomerID = dto.CustomerID,
             DeliveryDetails = new List<DeliveryDetail>()
         };
-        await _deliveryRepository.AddAsync(delivery);
+       
         foreach (var detailDto in dto.DeliveryDetails)
         {
             // Check product existence
@@ -51,6 +51,7 @@ public class DeliveryBusiness : IDeliveryBusiness
             await _deliveryDetailRepository.AddAsync(detail);
             delivery.DeliveryDetails.Add(detail);
         }
+        await _deliveryRepository.AddAsync(delivery);
         return delivery;
     }
 
