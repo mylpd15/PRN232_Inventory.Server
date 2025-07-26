@@ -7,6 +7,25 @@ public class DeliveryRepository : GenericRepository<Delivery>, IDeliveryReposito
     private readonly DataContext _context;
     public DeliveryRepository(DataContext context) : base(context) { _context = context; }
 
+    public async Task AddDeliveryWithDetailsAsync(Delivery delivery)
+    {
+        using var transaction = await _context.Database.BeginTransactionAsync();
+
+        try
+        {
+            _context.Deliveries.Add(delivery);
+            await _context.SaveChangesAsync(); 
+
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
+
+
     public IQueryable<Delivery> GetAllDeliveriesWithDetails()
     {
         return _context.Deliveries

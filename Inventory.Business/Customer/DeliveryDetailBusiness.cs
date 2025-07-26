@@ -151,6 +151,7 @@ public class DeliveryDetailBusiness : IDeliveryDetailBusiness
                     await _inventoryBusiness.UpdateInventoryAsync(inventory);
                 }
                 _deliveryDetailRepository.Remove(detail);
+                _deliveryDetailRepository.SaveChangesAsync();
             }
             catch
             {
