@@ -21,38 +21,54 @@ public class DeliveryBusiness : IDeliveryBusiness
     {
         if (dto.DeliveryDetails == null || !dto.DeliveryDetails.Any())
             throw new InvalidOperationException("Delivery details must not be empty.");
+
+        var validatedDetails = new List<DeliveryDetail>();
+
+        // Validate all details first
+        foreach (var detailDto in dto.DeliveryDetails)
+        {
+            var product = await _productBusiness.GetProductByIdAsync(detailDto.ProductID);
+            if (product == null)
+                throw new InvalidOperationException($"Product with ID {detailDto.ProductID} does not exist.");
+
+            var inventory = (await _inventoryBusiness.GetAllInventoriesAsync())
+                .FirstOrDefault(i => i.ProductID == detailDto.ProductID);
+
+            if (inventory == null || inventory.QuantityAvailable < detailDto.DeliveryQuantity)
+                throw new InvalidOperationException($"Not enough inventory for product {detailDto.ProductID}.");
+
+            validatedDetails.Add(new DeliveryDetail
+            {
+                ProductID = detailDto.ProductID,
+                DeliveryQuantity = detailDto.DeliveryQuantity,
+                ExpectedDate = detailDto.ExpectedDate
+            });
+        }
+
         var delivery = new Delivery
         {
             SalesDate = dto.SalesDate,
             CustomerID = dto.CustomerID,
-            DeliveryDetails = new List<DeliveryDetail>()
+            DeliveryDetails = validatedDetails 
         };
-        await _deliveryRepository.AddAsync(delivery);
-        foreach (var detailDto in dto.DeliveryDetails)
+
+        // Let repository or service layer handle saving everything with transaction
+        await _deliveryRepository.AddDeliveryWithDetailsAsync(delivery);
+
+        // Update inventory after successful save
+        foreach (var detail in validatedDetails)
         {
-            // Check product existence
-            var product = await _productBusiness.GetProductByIdAsync(detailDto.ProductID);
-            if (product == null)
-                throw new InvalidOperationException($"Product with ID {detailDto.ProductID} does not exist.");
-            // Check inventory
-            var inventory = (await _inventoryBusiness.GetAllInventoriesAsync()).FirstOrDefault(i => i.ProductID == detailDto.ProductID);
-            if (inventory == null || inventory.QuantityAvailable < detailDto.DeliveryQuantity)
-                throw new InvalidOperationException($"Not enough inventory for product {detailDto.ProductID}.");
-            // Subtract inventory
-            inventory.QuantityAvailable -= detailDto.DeliveryQuantity;
+            var inventory = (await _inventoryBusiness.GetAllInventoriesAsync())
+                .FirstOrDefault(i => i.ProductID == detail.ProductID);
+
+            inventory.QuantityAvailable -= detail.DeliveryQuantity;
             await _inventoryBusiness.UpdateInventoryAsync(inventory);
-            var detail = new DeliveryDetail
-            {
-                ProductID = detailDto.ProductID,
-                DeliveryQuantity = detailDto.DeliveryQuantity,
-                ExpectedDate = detailDto.ExpectedDate,
-                DeliveryID = delivery.DeliveryID
-            };
-            await _deliveryDetailRepository.AddAsync(detail);
-            delivery.DeliveryDetails.Add(detail);
         }
+
         return delivery;
     }
+
+
 
     public async Task DeleteDeliveryAsync(int deliveryId)
     {
@@ -78,8 +94,8 @@ public class DeliveryBusiness : IDeliveryBusiness
         if (existing == null)
             throw new InvalidOperationException($"Delivery with ID {deliveryId} does not exist.");
         // Restrict updates if status is Delivered or Shipped
-        if (existing.Status == DeliveryStatus.Delivered)
-            throw new InvalidOperationException("Cannot update delivery or details when status is Shipped.");
+        //if (existing.Status == DeliveryStatus.Delivered)
+          //  throw new InvalidOperationException("Cannot update delivery or details when status is Shipped.");
         // If status is being set to Cancelled, add back inventory
         if (delivery.Status == DeliveryStatus.Cancelled && existing.Status != DeliveryStatus.Cancelled)
         {

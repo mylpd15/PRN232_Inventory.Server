@@ -28,7 +28,9 @@ builder.Services.AddControllers()
     .AddOData(opt =>
         opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count()
         .AddRouteComponents("odata", GetEdmModel())
-    );
+    )
+    .AddJsonOptions(x =>
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 IEdmModel GetEdmModel()
 {
