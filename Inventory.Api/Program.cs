@@ -35,6 +35,7 @@ builder.Services.AddControllers()
 IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
+    builder.EntitySet<WareSync.Api.DTOs.UserDto>("UsersOData");
     builder.EntitySet<WareSync.Domain.AppUser>("AppUsers");
     builder.EntitySet<Customer>("Customers");
     builder.EntitySet<Delivery>("Deliveries"); 
@@ -45,7 +46,6 @@ IEdmModel GetEdmModel()
     // Thêm các entity khác nếu cần
     return builder.GetEdmModel();
 }
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

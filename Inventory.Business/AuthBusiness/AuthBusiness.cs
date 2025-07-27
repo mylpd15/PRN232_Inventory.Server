@@ -1,4 +1,4 @@
-using WareSync.Domain;
+﻿using WareSync.Domain;
 using WareSync.Repositories;
 using WareSync.Services;
 using BC = BCrypt.Net.BCrypt;
@@ -80,7 +80,7 @@ public class AuthBusiness : IAuthBusiness
             AppUser = appUser
         };
     }
-    private TokenPayloadDto GenerateTokenPayload(AppUser appUser)
+    public TokenPayloadDto GenerateTokenPayload(AppUser appUser)
     {
         return new TokenPayloadDto
         {
@@ -120,4 +120,31 @@ public class AuthBusiness : IAuthBusiness
         var jwt = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(jwt);
     }
-} 
+    public string GenerateOneTimeLoginToken(AppUser appUser)
+    {
+        var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+        var secretKey = System.Text.Encoding.UTF8.GetBytes(_configService.GetString("Jwt:SecretKey"));
+        var claims = new List<System.Security.Claims.Claim>
+    {
+        new System.Security.Claims.Claim("UserId", appUser.Id.ToString()),
+        new System.Security.Claims.Claim("Username", appUser.Username ?? ""),
+        new System.Security.Claims.Claim("Email", appUser.Email ?? ""),
+        new System.Security.Claims.Claim("OneTimeLogin", "true")
+    };
+
+        var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
+        {
+            Subject = new System.Security.Claims.ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddMinutes(15), // thời hạn token 15 phút
+            Issuer = _configService.GetString("Jwt:Issuer"),
+            Audience = _configService.GetString("Jwt:Audience"),
+            SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
+                new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(secretKey),
+                Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256)
+        };
+
+        var jwt = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(jwt);
+    }
+
+}

@@ -35,4 +35,28 @@ public class EmailService : IEmailService
         smtpClient.Send(message);
     }
 
+    public async Task SendEmailAsync(string toEmail, string subject, string body, bool isHtml = true)
+    {
+        if (string.IsNullOrEmpty(toEmail)) return;
+
+        var message = new MailMessage
+        {
+            From = new MailAddress(_emailConfig.AppEmail),
+            Subject = subject,
+            Body = body,
+            IsBodyHtml = isHtml
+        };
+
+        message.To.Add(new MailAddress(toEmail));
+
+        using var smtpClient = new SmtpClient("smtp.gmail.com")
+        {
+            Port = 587,
+            Credentials = new NetworkCredential(_emailConfig.AppEmail, _emailConfig.AppPassword),
+            EnableSsl = true
+        };
+
+        await smtpClient.SendMailAsync(message);
+    }
+
 }
