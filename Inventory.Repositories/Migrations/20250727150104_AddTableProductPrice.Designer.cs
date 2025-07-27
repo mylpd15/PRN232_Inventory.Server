@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WareSync.Repositories;
 
@@ -11,9 +12,11 @@ using WareSync.Repositories;
 namespace WareSync.Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250727150104_AddTableProductPrice")]
+    partial class AddTableProductPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppUsers", (string)null);
+                    b.ToTable("AppUsers");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Customer", b =>
@@ -87,7 +90,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasKey("CustomerID");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Delivery", b =>
@@ -127,7 +130,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasIndex("CustomerID");
 
-                    b.ToTable("Deliveries", (string)null);
+                    b.ToTable("Deliveries");
                 });
 
             modelBuilder.Entity("WareSync.Domain.DeliveryDetail", b =>
@@ -175,7 +178,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("DeliveryDetails", (string)null);
+                    b.ToTable("DeliveryDetails");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Inventory", b =>
@@ -226,7 +229,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasIndex("WarehouseID");
 
-                    b.ToTable("Inventories", (string)null);
+                    b.ToTable("Inventories");
                 });
 
             modelBuilder.Entity("WareSync.Domain.InventoryLog", b =>
@@ -270,7 +273,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasIndex("InventoryID");
 
-                    b.ToTable("InventoryLogs", (string)null);
+                    b.ToTable("InventoryLogs");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Location", b =>
@@ -308,7 +311,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasKey("LocationID");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Order", b =>
@@ -345,7 +348,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasIndex("ProviderID");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("WareSync.Domain.OrderDetail", b =>
@@ -393,7 +396,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Product", b =>
@@ -464,7 +467,7 @@ namespace WareSync.Repositories.Migrations
                     b.HasIndex("ProductCode")
                         .IsUnique();
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("WareSync.Domain.ProductPrice", b =>
@@ -510,7 +513,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ProductPrices", (string)null);
+                    b.ToTable("ProductPrices");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Provider", b =>
@@ -548,7 +551,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasKey("ProviderID");
 
-                    b.ToTable("Providers", (string)null);
+                    b.ToTable("Providers");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Transfer", b =>
@@ -596,7 +599,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasIndex("WarehouseID");
 
-                    b.ToTable("Transfers", (string)null);
+                    b.ToTable("Transfers");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Warehouse", b =>
@@ -638,7 +641,7 @@ namespace WareSync.Repositories.Migrations
 
                     b.HasIndex("LocationID");
 
-                    b.ToTable("Warehouses", (string)null);
+                    b.ToTable("Warehouses");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Delivery", b =>

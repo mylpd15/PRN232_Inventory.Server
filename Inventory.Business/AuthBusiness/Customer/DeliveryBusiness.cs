@@ -1,7 +1,7 @@
 ﻿using WareSync.Domain;
 using WareSync.Repositories;
-using WareSync.Business;
 using WareSync.Domain.Enums;
+using WareSync.Business;
 
 namespace WareSync.Business;
 public class DeliveryBusiness : IDeliveryBusiness

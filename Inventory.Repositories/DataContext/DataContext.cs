@@ -106,10 +106,22 @@ public class DataContext : DbContext
             .WithOne(l => l.Inventory)
             .HasForeignKey(l => l.InventoryID)
             .OnDelete(DeleteBehavior.Cascade);
+        // Product - ProductPrice: 1 - nhiều
+        modelBuilder.Entity<Product>()
+            .HasMany(p => p.Prices)
+            .WithOne(pp => pp.Product)
+            .HasForeignKey(pp => pp.ProductID)
+            .OnDelete(DeleteBehavior.Cascade);
+        // ProductPrice - Product: 1 - nhiều
+        modelBuilder.Entity<ProductPrice>()
+           .HasOne(pp => pp.Product)
+           .WithMany(p => p.Prices)
+           .HasForeignKey(pp => pp.ProductID);
 
     }
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductPrice> ProductPrices { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<InventoryLog> InventoryLogs { get; set; }
     public DbSet<Order> Orders { get; set; }
