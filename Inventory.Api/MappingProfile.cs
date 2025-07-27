@@ -44,9 +44,20 @@ public class MappingProfile : Profile
         CreateMap<CreateDeliveryDetailDto, DeliveryDetail>();
 
         //Product Mapping
-        CreateMap<Product, ProductDto>();
+        CreateMap<Product, ProductDto>()
+          .ForMember(
+            dest => dest.Prices,
+            opt => opt.MapFrom(src => src.Prices)
+          );
         CreateMap<CreateProductDto, Product>();
         CreateMap<UpdateProductDto, Product>();
+        //CreateMap<CreateProductWithPriceDto, Product>();
+
+
+        //ProductPrice Mapping
+        CreateMap<ProductPrice, ProductPriceDto>();
+        CreateMap<CreateProductPriceDto, ProductPrice>();
+        CreateMap<UpdateProductPriceDto, ProductPrice>();
 
         // Inventory Mapping
         CreateMap<Inventory, InventoryDto>()
@@ -59,6 +70,8 @@ public class MappingProfile : Profile
         // InventoryLog Mapping
         CreateMap<InventoryLog, InventoryLogDto>();
         CreateMap<CreateInventoryLogDto, InventoryLog>();
+
+
 
 
     }

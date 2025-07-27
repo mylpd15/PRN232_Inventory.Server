@@ -10,7 +10,7 @@ public class CustomerBusiness : ICustomerBusiness
         _customerRepository = customerRepository;
     }
 
-    public async Task<WareSync.Domain.Customer> CreateCustomerAsync(WareSync.Domain.Customer customer)
+    public async Task<Domain.Customer> CreateCustomerAsync(Domain.Customer customer)
     {
         // Check if customer name already exists
        /* if (await CustomerNameExistsAsync(customer.CustomerName))
@@ -21,7 +21,7 @@ public class CustomerBusiness : ICustomerBusiness
         return await _customerRepository.AddAsync(customer);
     }
 
-    public async Task<WareSync.Domain.Customer> UpdateCustomerAsync(WareSync.Domain.Customer customer)
+    public async Task<Domain.Customer> UpdateCustomerAsync(Domain.Customer customer)
     {
         // Check if customer exists
         var existing = await _customerRepository.GetByIdAsync(customer.CustomerID);
@@ -59,7 +59,7 @@ public class CustomerBusiness : ICustomerBusiness
         await _customerRepository.SaveChangesAsync();
     }
 
-    public async Task<WareSync.Domain.Customer?> GetCustomerByIdAsync(int customerId)
+    public async Task<Domain.Customer?> GetCustomerByIdAsync(int customerId)
     {
         return await _customerRepository.GetByIdAsync(customerId);
     }

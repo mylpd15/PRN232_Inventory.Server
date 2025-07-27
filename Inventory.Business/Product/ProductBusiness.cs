@@ -1,3 +1,4 @@
+﻿using Microsoft.EntityFrameworkCore;
 using WareSync.Domain;
 using WareSync.Repositories.ProductRepository;
 
@@ -5,10 +6,29 @@ namespace WareSync.Business;
 public class ProductBusiness : IProductBusiness
 {
     private readonly IProductRepository _productRepository;
-    public ProductBusiness(IProductRepository productRepository)
+    private readonly IProductPriceBusiness _priceBusiness;
+    public ProductBusiness(
+             IProductRepository productRepository,
+             IProductPriceBusiness priceBusiness
+             )
     {
         _productRepository = productRepository;
+        _priceBusiness = priceBusiness;
     }
+    public async Task<Product> CreateProductWithPriceAsync(Product product, ProductPrice price)
+    {
+        var createdProduct = await _productRepository.AddAsync(product);
+
+        price.ProductID = createdProduct.ProductID;
+
+        await _priceBusiness.CreateProductPriceAsync(price);
+
+        // 4. (Tuỳ chọn) Đổ navigation collection để trả về
+        createdProduct.Prices = new List<ProductPrice> { price };
+
+        return createdProduct;
+    }
+
     public async Task<Product> CreateProductAsync(Product product)
     {
         await _productRepository.AddAsync(product);
@@ -27,10 +47,16 @@ public class ProductBusiness : IProductBusiness
     }
     public async Task<Product?> GetProductByIdAsync(int productId)
     {
-        return await _productRepository.GetByIdAsync(productId);
+        return await _productRepository
+                .Query()
+                .Include(p => p.Prices)
+                .FirstOrDefaultAsync(p => p.ProductID == productId);
     }
     public async Task<IEnumerable<Product>> GetAllProductsAsync()
     {
-        return await _productRepository.GetAllAsync();
+        return await _productRepository
+                   .Query()                                  // IQueryable<Product>
+                   .Include(p => p.Prices)                   // load luôn Prices
+                   .ToListAsync();
     }
 } 

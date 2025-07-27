@@ -36,10 +36,12 @@ public class ProductsController : ODataController
         return Ok(dto);
     }
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreateProductDto productDto)
+    public async Task<IActionResult> Post([FromBody] CreateProductWithPriceDto productWithPriceDto)
     {
-        var product = _mapper.Map<Product>(productDto);
-        var created = await _productBusiness.CreateProductAsync(product);
+        var product = _mapper.Map<Product>(productWithPriceDto.Product);
+        var price = _mapper.Map<ProductPrice>(productWithPriceDto.ProductPrice);
+
+        var created = await _productBusiness.CreateProductWithPriceAsync(product, price);
         var resultDto = _mapper.Map<ProductDto>(created);   
         return Created(resultDto);
     }
