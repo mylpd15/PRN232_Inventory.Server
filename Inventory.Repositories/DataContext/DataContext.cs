@@ -100,10 +100,18 @@ public class DataContext : DbContext
             .WithOne(t => t.Warehouse)
             .HasForeignKey(t => t.WarehouseID)
             .OnDelete(DeleteBehavior.Cascade);
+        // Inventory - InventoryLog: 1 - nhiều
+        modelBuilder.Entity<Inventory>()
+            .HasMany(i => i.InventoryLogs)
+            .WithOne(l => l.Inventory)
+            .HasForeignKey(l => l.InventoryID)
+            .OnDelete(DeleteBehavior.Cascade);
+
     }
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
+    public DbSet<InventoryLog> InventoryLogs { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
@@ -113,4 +121,5 @@ public class DataContext : DbContext
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Delivery> Deliveries { get; set; }
     public DbSet<DeliveryDetail> DeliveryDetails { get; set; }
+
 }

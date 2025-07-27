@@ -112,6 +112,9 @@ namespace WareSync.Repositories.Migrations
                     b.Property<DateTime>("SalesDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -224,6 +227,50 @@ namespace WareSync.Repositories.Migrations
                     b.HasIndex("WarehouseID");
 
                     b.ToTable("Inventories");
+                });
+
+            modelBuilder.Entity("WareSync.Domain.InventoryLog", b =>
+                {
+                    b.Property<int>("LogID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LogID"));
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ChangedQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InventoryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.HasKey("LogID");
+
+                    b.HasIndex("InventoryID");
+
+                    b.ToTable("InventoryLogs");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Location", b =>
@@ -597,6 +644,17 @@ namespace WareSync.Repositories.Migrations
                     b.Navigation("Warehouse");
                 });
 
+            modelBuilder.Entity("WareSync.Domain.InventoryLog", b =>
+                {
+                    b.HasOne("WareSync.Domain.Inventory", "Inventory")
+                        .WithMany("InventoryLogs")
+                        .HasForeignKey("InventoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inventory");
+                });
+
             modelBuilder.Entity("WareSync.Domain.Order", b =>
                 {
                     b.HasOne("WareSync.Domain.Provider", "Provider")
@@ -665,6 +723,11 @@ namespace WareSync.Repositories.Migrations
             modelBuilder.Entity("WareSync.Domain.Delivery", b =>
                 {
                     b.Navigation("DeliveryDetails");
+                });
+
+            modelBuilder.Entity("WareSync.Domain.Inventory", b =>
+                {
+                    b.Navigation("InventoryLogs");
                 });
 
             modelBuilder.Entity("WareSync.Domain.Location", b =>

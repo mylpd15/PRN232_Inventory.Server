@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace WareSync.Api.DTOs;
 public class ProductDto
 {
+    [Key]
     public int ProductID { get; set; }
     public string ProductCode { get; set; } = string.Empty;
     public string? BarCode { get; set; }
