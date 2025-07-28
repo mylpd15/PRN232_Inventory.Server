@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
@@ -48,14 +48,22 @@ public class ProductsController : ODataController
     }
 
     [HttpPut("{key}")]
-    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateProductDto productDto)
-    {
-        if (key != productDto.ProductID) return BadRequest("ID mismatch");
-        var product = _mapper.Map<Product>(productDto);
-        var updated = await _productBusiness.UpdateProductAsync(product);
+    public async Task<IActionResult> Put([FromODataUri] int key,[FromBody] UpdateProductWithPriceDto dto)
+   {
+        if (key != dto.Product.ProductID)
+            return BadRequest("ID mismatch");
+
+        // Map DTO → Domain
+        var product = _mapper.Map<Product>(dto.Product);
+        var price = _mapper.Map<ProductPrice>(dto.ProductPrice);
+
+        var updated = await _productBusiness.UpdateProductWithPriceAsync(product, price);
+
         var resultDto = _mapper.Map<ProductDto>(updated);
+
         return Updated(resultDto);
     }
+
     [HttpDelete("{key}")]
     public async Task<IActionResult> Delete([FromODataUri] int key)
     {

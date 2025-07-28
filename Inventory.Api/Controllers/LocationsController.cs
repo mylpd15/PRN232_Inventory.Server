@@ -36,7 +36,7 @@ public class LocationsController : ODataController
         return Ok(dto);
     }
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] LocationDto dto)
+    public async Task<IActionResult> Post([FromBody] CreateLocationDto dto)
     {
         var entity = _mapper.Map<Location>(dto);
         var created = await _locationBusiness.CreateLocationAsync(entity);

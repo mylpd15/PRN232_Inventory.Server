@@ -52,7 +52,6 @@ public class MappingProfile : Profile
           );
         CreateMap<CreateProductDto, Product>();
         CreateMap<UpdateProductDto, Product>();
-        //CreateMap<CreateProductWithPriceDto, Product>();
 
 
         //ProductPrice Mapping
@@ -104,8 +103,14 @@ public class MappingProfile : Profile
         CreateMap<CreateTransferDto, Transfer>();
         CreateMap<UpdateTransferDto, Transfer>();
 
+        //Location Mapping
+        CreateMap<Location, LocationDto>();
+        CreateMap<CreateLocationDto, Location>();
+        CreateMap<LocationDto, Location>();
 
-
-
+        //Warehouses Mapping
+        CreateMap<Warehouse, WarehouseDto>();
+        CreateMap<CreateWarehouseDto, Warehouse>();
+        CreateMap<WarehouseDto, Warehouse>();
     }
 }

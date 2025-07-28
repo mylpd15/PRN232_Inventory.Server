@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WareSync.Domain;
 using WareSync.Repositories.ProductRepository;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WareSync.Business;
 public class ProductBusiness : IProductBusiness
@@ -28,17 +29,37 @@ public class ProductBusiness : IProductBusiness
 
         return createdProduct;
     }
+    //public async Task<Product> CreateProductAsync(Product product)
+    //{
+    //    await _productRepository.AddAsync(product);
+    //    return product;
+    //}
+    public async Task<Product> UpdateProductWithPriceAsync(Product product, ProductPrice price)
+    {
+        var createdProduct = await _productRepository.UpdateAsync(product);
 
-    public async Task<Product> CreateProductAsync(Product product)
-    {
-        await _productRepository.AddAsync(product);
-        return product;
+        price.ProductID = product.ProductID;
+
+        if (price.ProductPriceId > 0)
+        {
+            await _priceBusiness.UpdateProductPriceAsync(price);
+        }
+        else
+        {
+            await _priceBusiness.CreateProductPriceAsync(price);
+        }
+
+
+        var updated = await GetProductByIdAsync(product.ProductID);
+
+        return updated;
     }
-    public async Task<Product> UpdateProductAsync(Product product)
-    {
-        await _productRepository.UpdateAsync(product);
-        return product;
-    }
+
+    //public async Task<Product> UpdateProductAsync(Product product)
+    //{
+    //    await _productRepository.UpdateAsync(product);
+    //    return product;
+    //}
     public async Task DeleteProductAsync(int productId)
     {
         var product = await _productRepository.GetByIdAsync(productId);
@@ -55,8 +76,8 @@ public class ProductBusiness : IProductBusiness
     public async Task<IEnumerable<Product>> GetAllProductsAsync()
     {
         return await _productRepository
-                   .Query()                                  // IQueryable<Product>
-                   .Include(p => p.Prices)                   // load luôn Prices
+                   .Query()                                  
+                   .Include(p => p.Prices)// load luôn Prices
                    .ToListAsync();
     }
 } 
