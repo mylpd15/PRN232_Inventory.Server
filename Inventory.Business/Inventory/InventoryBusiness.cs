@@ -28,8 +28,20 @@ public class InventoryBusiness : IInventoryBusiness
     }
     public async Task<Inventory> UpdateInventoryAsync(Inventory inventory)
     {
-        var old = await _inventoryRepository.GetByIdAsync(inventory.InventoryID);
+        var old = await _inventoryRepository.GetByIdAsync(inventory.InventoryID) ?? throw new KeyNotFoundException($"Inventory {inventory.InventoryID} not existed");
+
+        _inventoryRepository.Detach(old);
+
         var diff = inventory.QuantityAvailable - (old?.QuantityAvailable ?? 0);
+
+        //old.QuantityAvailable = inventory.QuantityAvailable;
+        //old.MinimumStockLevel = inventory.MinimumStockLevel;
+        //old.MaximumStockLevel = inventory.MaximumStockLevel;
+        //old.ReorderPoint = inventory.ReorderPoint;
+        //old.ProductID = inventory.ProductID;
+        //old.WarehouseID = inventory.WarehouseID;
+
+        //await _inventoryRepository.SaveChangesAsync();
 
         await _inventoryRepository.UpdateAsync(inventory);
 
