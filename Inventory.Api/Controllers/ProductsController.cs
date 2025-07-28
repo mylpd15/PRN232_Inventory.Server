@@ -1,13 +1,14 @@
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.Mvc;
-using WareSync.Business;
-using WareSync.Api.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using WareSync.Api.DTOs;
+using WareSync.Business;
+using WareSync.Domain;
 
 namespace WareSync.Api;
-[Route("odata/[controller]")]
+[Route("api/[controller]")]
 public class ProductsController : ODataController
 {
     private readonly IProductBusiness _productBusiness;
@@ -34,4 +35,32 @@ public class ProductsController : ODataController
         var dto = _mapper.Map<ProductDto>(product);
         return Ok(dto);
     }
-} 
+
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] CreateProductWithPriceDto productWithPriceDto)
+    {
+        var product = _mapper.Map<Product>(productWithPriceDto.Product);
+        var price = _mapper.Map<ProductPrice>(productWithPriceDto.ProductPrice);
+
+        var created = await _productBusiness.CreateProductWithPriceAsync(product, price);
+        var resultDto = _mapper.Map<ProductDto>(created);   
+        return Created(resultDto);
+    }
+
+    [HttpPut("{key}")]
+    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateProductDto productDto)
+    {
+        if (key != productDto.ProductID) return BadRequest("ID mismatch");
+        var product = _mapper.Map<Product>(productDto);
+        var updated = await _productBusiness.UpdateProductAsync(product);
+        var resultDto = _mapper.Map<ProductDto>(updated);
+        return Updated(resultDto);
+    }
+    [HttpDelete("{key}")]
+    public async Task<IActionResult> Delete([FromODataUri] int key)
+    {
+        await _productBusiness.DeleteProductAsync(key);
+        return NoContent();
+    }
+
+}

@@ -8,4 +8,5 @@ public interface IInventoryBusiness
     Task DeleteInventoryAsync(int inventoryId);
     Task<Domain.Inventory?> GetInventoryByIdAsync(int inventoryId);
     Task<IEnumerable<Domain.Inventory>> GetAllInventoriesAsync();
+    Task<Domain.Inventory?> GetByProductAndWarehouseAsync(int productId, int warehouseId);
 } 

@@ -2,7 +2,6 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
@@ -17,7 +16,9 @@ using WareSync.Domain;
 using WareSync.Services;
 using WareSync.Repositories;
 using WareSync.Business;
-using AutoMapper;
+using WareSync.Repositories.ProductRepository;
+using WareSync.Api.DTOs;
+using WareSync.Repositories.ProviderRepository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,16 +27,29 @@ builder.Services.AddControllers()
     .AddOData(opt =>
         opt.Select().Filter().OrderBy().Expand().SetMaxTop(100).Count()
         .AddRouteComponents("odata", GetEdmModel())
-    );
+    )
+    .AddJsonOptions(x =>
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
-    builder.EntitySet<WareSync.Domain.AppUser>("AppUsers");
+    builder.EntitySet<UserDto>("UsersOData");
+    builder.EntitySet<AppUser>("AppUsers");
+    builder.EntitySet<Customer>("Customers");
+    builder.EntitySet<Delivery>("Deliveries"); 
+    builder.EntitySet<DeliveryDetail>("DeliveryDetails");
+    builder.EntitySet<ProductDto>("Products");
+    builder.EntitySet<ProductPriceDto>("ProductPrices");
+    builder.EntitySet<InventoryDto>("Inventories");
+    builder.EntitySet<InventoryLogDto>("InventoryLogs");
+    builder.EntitySet<ProviderDto>("Providers");
+    builder.EntitySet<OrderDto>("Orders");
+    builder.EntitySet<OrderDetailDto>("OrderDetails");
+    builder.EntitySet<TransferDto>("Transfers");
     // Thêm các entity khác nếu cần
     return builder.GetEdmModel();
 }
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -141,10 +155,34 @@ builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserBusiness, UserBusiness>();
 builder.Services.AddScoped<IAuthBusiness, AuthBusiness>();
+builder.Services.AddScoped<ICustomerBusiness, CustomerBusiness>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IDeliveryBusiness, DeliveryBusiness>();
 builder.Services.AddScoped<IDeliveryDetailRepository, DeliveryDetailRepository>();
-//builder.Services.AddScoped<IDeliveryDetailBusiness, DeliveryDetailBusiness>();
+builder.Services.AddScoped<IDeliveryDetailBusiness, DeliveryDetailBusiness>();
+builder.Services.AddScoped<IProductBusiness, ProductBusiness>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductPriceBusiness, ProductPriceBusiness>();
+builder.Services.AddScoped<IProductPriceRepository, ProductPriceRepository>();
+builder.Services.AddScoped<IInventoryBusiness, InventoryBusiness>();
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryLogBusiness, InventoryLogBusiness>();
+builder.Services.AddScoped<IInventoryLogRepository, InventoryLogRepository>();
+builder.Services.AddScoped<IOrderBusiness, OrderBusiness>(provider =>
+{
+    var orderRepo = provider.GetRequiredService<IOrderRepository>();
+    var orderDetailRepo = provider.GetRequiredService<IOrderDetailRepository>();
+    var inventoryBusiness = provider.GetRequiredService<IInventoryBusiness>();
+    return new OrderBusiness(orderRepo, orderDetailRepo, inventoryBusiness);
+});
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderDetailBusiness, OrderDetailBusiness>();
+builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+builder.Services.AddScoped<IProviderBusiness, ProviderBusiness>();
+builder.Services.AddScoped<IProviderRepository, ProviderRepository>();
+
+
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 

@@ -3,6 +3,7 @@ public class CreateOrderDto
 {
     public DateTime OrderDate { get; set; }
     public int ProviderID { get; set; }
+    public int WarehouseId { get; set; } // Added for warehouse reference
     public List<CreateOrderDetailDto> OrderDetails { get; set; } = new();
 }
 public class CreateOrderDetailDto

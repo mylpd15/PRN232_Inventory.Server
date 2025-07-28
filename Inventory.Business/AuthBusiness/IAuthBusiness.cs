@@ -7,4 +7,6 @@ public interface IAuthBusiness
     Task<LoginPayloadDto> Login(UserCredentialDto dto);
     Task<LoginPayloadDto> SignInWithGoogle(GoogleSignInVM model);
     Task<LoginPayloadDto> Signup(CreateUserDto dto);
+    string GenerateOneTimeLoginToken(AppUser appUser);
+    TokenPayloadDto GenerateTokenPayload(AppUser appUser);
 } 

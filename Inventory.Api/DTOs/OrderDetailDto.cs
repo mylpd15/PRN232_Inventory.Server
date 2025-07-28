@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace WareSync.Api.DTOs;
 public class OrderDetailDto
 {
+    [Key]
     public int OrderDetailID { get; set; }
     public int OrderID { get; set; }
     public int ProductID { get; set; }

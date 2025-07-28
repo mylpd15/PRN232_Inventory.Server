@@ -23,6 +23,8 @@ public class Product : AuditableEntity
     public decimal PackedDepth { get; set; }
     public bool Refrigerated { get; set; }
     // Navigation
+    public ICollection<ProductPrice> Prices { get; set; } = new List<ProductPrice>();
+
     public ICollection<Inventory>? Inventories { get; set; }
     public ICollection<OrderDetail>? OrderDetails { get; set; }
     public ICollection<DeliveryDetail>? DeliveryDetails { get; set; }

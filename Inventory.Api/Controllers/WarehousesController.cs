@@ -5,6 +5,7 @@ using WareSync.Business;
 using WareSync.Api.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.OData.Formatter;
+using WareSync.Domain;
 
 namespace WareSync.Api;
 [Route("odata/[controller]")]
@@ -34,4 +35,17 @@ public class WarehousesController : ODataController
         var dto = _mapper.Map<WarehouseDto>(warehouse);
         return Ok(dto);
     }
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] WarehouseDto warehouseDto)
+    {
+        var warehouse = _mapper.Map<Warehouse>(warehouseDto);
+        var created = await _warehouseBusiness.CreateWarehouseAsync(warehouse);
+        return Created(created);
+    }
+
+    //[HttpPut]
+    //public async Task<IActionResult> Put([FromRoute] )
+    //{
+
+    //}
 } 

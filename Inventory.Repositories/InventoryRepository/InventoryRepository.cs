@@ -1,8 +1,14 @@
+using Microsoft.EntityFrameworkCore;
 using WareSync.Domain;
 
-namespace WareSync.Repositories.InventoryRepository;
+namespace WareSync.Repositories;
 public class InventoryRepository : GenericRepository<Inventory>, IInventoryRepository
 {
+   
     public InventoryRepository(DataContext context) : base(context) { }
-    // Thêm các method đặc thù nếu cần
+
+    public async Task<Inventory?> GetByProductAndWarehouseAsync(int productId, int warehouseId)
+    {
+        return await _context.Inventories.FirstOrDefaultAsync(i => i.ProductID == productId && i.WarehouseID == warehouseId);
+    }
 } 

@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace WareSync.Api.DTOs;
 public class ProductDto
 {
+    [Key]
     public int ProductID { get; set; }
     public string ProductCode { get; set; } = string.Empty;
     public string? BarCode { get; set; }
@@ -13,4 +16,5 @@ public class ProductDto
     public decimal PackedWidth { get; set; }
     public decimal PackedDepth { get; set; }
     public bool Refrigerated { get; set; }
+    public List<ProductPriceDto> Prices { get; set; } = new();
 } 

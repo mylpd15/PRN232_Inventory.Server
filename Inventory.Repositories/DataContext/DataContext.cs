@@ -99,11 +99,31 @@ public class DataContext : DbContext
             .HasMany(w => w.Transfers)
             .WithOne(t => t.Warehouse)
             .HasForeignKey(t => t.WarehouseID)
+            .OnDelete(DeleteBehavior.Restrict);
+        // Inventory - InventoryLog: 1 - nhiều
+        modelBuilder.Entity<Inventory>()
+            .HasMany(i => i.InventoryLogs)
+            .WithOne(l => l.Inventory)
+            .HasForeignKey(l => l.InventoryID)
             .OnDelete(DeleteBehavior.Cascade);
+        // Product - ProductPrice: 1 - nhiều
+        modelBuilder.Entity<Product>()
+            .HasMany(p => p.Prices)
+            .WithOne(pp => pp.Product)
+            .HasForeignKey(pp => pp.ProductID)
+            .OnDelete(DeleteBehavior.Cascade);
+        // ProductPrice - Product: 1 - nhiều
+        modelBuilder.Entity<ProductPrice>()
+           .HasOne(pp => pp.Product)
+           .WithMany(p => p.Prices)
+           .HasForeignKey(pp => pp.ProductID);
+
     }
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductPrice> ProductPrices { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
+    public DbSet<InventoryLog> InventoryLogs { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
@@ -113,4 +133,5 @@ public class DataContext : DbContext
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Delivery> Deliveries { get; set; }
     public DbSet<DeliveryDetail> DeliveryDetails { get; set; }
+
 }

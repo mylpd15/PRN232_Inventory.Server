@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace WareSync.Api.DTOs;
 public class TransferDto
 {
+    [Key]
     public int TransferID { get; set; }
     public int TransferQuantity { get; set; }
     public DateTime SentDate { get; set; }

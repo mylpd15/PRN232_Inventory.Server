@@ -8,7 +8,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.OData.Formatter;
 
 namespace WareSync.Api;
-[Route("odata/[controller]")]
+
+[Route("api/[controller]")]
 public class TransfersController : ODataController
 {
     private readonly ITransferBusiness _transferBusiness;
@@ -26,6 +27,7 @@ public class TransfersController : ODataController
         var dtos = _mapper.Map<IEnumerable<TransferDto>>(entities);
         return Ok(dtos);
     }
+
     [EnableQuery]
     [HttpGet("{key}")]
     public async Task<IActionResult> Get([FromODataUri] int key)
@@ -35,21 +37,28 @@ public class TransfersController : ODataController
         var dto = _mapper.Map<TransferDto>(entity);
         return Ok(dto);
     }
+
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] TransferDto dto)
+    public async Task<IActionResult> Post([FromBody] CreateTransferDto dto)
     {
         var entity = _mapper.Map<Transfer>(dto);
         var created = await _transferBusiness.CreateTransferAsync(entity);
-        return Created(created);
+        var result = _mapper.Map<TransferDto>(created);
+        return CreatedAtAction(nameof(Get), new { key = result.TransferID }, result);
     }
+
     [HttpPut("{key}")]
-    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] TransferDto dto)
+    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateTransferDto dto)
     {
+        if (key != dto.TransferID)
+            return BadRequest("Key mismatch");
+        
         var entity = _mapper.Map<Transfer>(dto);
-        entity.TransferID = key;
         var updated = await _transferBusiness.UpdateTransferAsync(entity);
-        return Updated(updated);
+        var result = _mapper.Map<TransferDto>(updated);
+        return Ok(result);
     }
+
     [HttpDelete("{key}")]
     public async Task<IActionResult> Delete([FromODataUri] int key)
     {
