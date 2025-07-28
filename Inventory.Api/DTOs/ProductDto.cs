@@ -16,4 +16,5 @@ public class ProductDto
     public decimal PackedWidth { get; set; }
     public decimal PackedDepth { get; set; }
     public bool Refrigerated { get; set; }
+    public List<ProductPriceDto> Prices { get; set; } = new();
 } 

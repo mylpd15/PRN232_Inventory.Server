@@ -2,7 +2,6 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
@@ -17,7 +16,6 @@ using WareSync.Domain;
 using WareSync.Services;
 using WareSync.Repositories;
 using WareSync.Business;
-using AutoMapper;
 using WareSync.Repositories.ProductRepository;
 using WareSync.Api.DTOs;
 using WareSync.Repositories.ProviderRepository;
@@ -36,12 +34,13 @@ builder.Services.AddControllers()
 IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
-    builder.EntitySet<WareSync.Api.DTOs.UserDto>("UsersOData");
-    builder.EntitySet<WareSync.Domain.AppUser>("AppUsers");
+    builder.EntitySet<UserDto>("UsersOData");
+    builder.EntitySet<AppUser>("AppUsers");
     builder.EntitySet<Customer>("Customers");
     builder.EntitySet<Delivery>("Deliveries"); 
     builder.EntitySet<DeliveryDetail>("DeliveryDetails");
     builder.EntitySet<ProductDto>("Products");
+    builder.EntitySet<ProductPriceDto>("ProductPrices");
     builder.EntitySet<InventoryDto>("Inventories");
     builder.EntitySet<InventoryLogDto>("InventoryLogs");
     builder.EntitySet<ProviderDto>("Providers");
@@ -164,6 +163,8 @@ builder.Services.AddScoped<IDeliveryDetailRepository, DeliveryDetailRepository>(
 builder.Services.AddScoped<IDeliveryDetailBusiness, DeliveryDetailBusiness>();
 builder.Services.AddScoped<IProductBusiness, ProductBusiness>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductPriceBusiness, ProductPriceBusiness>();
+builder.Services.AddScoped<IProductPriceRepository, ProductPriceRepository>();
 builder.Services.AddScoped<IInventoryBusiness, InventoryBusiness>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IInventoryLogBusiness, InventoryLogBusiness>();

@@ -37,21 +37,14 @@ public class ProductsController : ODataController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreateProductDto productDto)
+    public async Task<IActionResult> Post([FromBody] CreateProductWithPriceDto productWithPriceDto)
     {
-        if (productDto == null)
-            return BadRequest("Product data is missing or invalid JSON.");
+        var product = _mapper.Map<Product>(productWithPriceDto.Product);
+        var price = _mapper.Map<ProductPrice>(productWithPriceDto.ProductPrice);
 
-        var product = _mapper.Map<Product>(productDto);
-        if (product == null)
-            return BadRequest("Failed to map product data.");
-
-        var created = await _productBusiness.CreateProductAsync(product);
-        if (created == null)
-            return StatusCode(500, "Product creation failed.");
-
-        var resultDto = _mapper.Map<ProductDto>(created);
-        return CreatedAtAction(nameof(Post), new { id = created.ProductID }, resultDto);
+        var created = await _productBusiness.CreateProductWithPriceAsync(product, price);
+        var resultDto = _mapper.Map<ProductDto>(created);   
+        return Created(resultDto);
     }
 
     [HttpPut("{key}")]
