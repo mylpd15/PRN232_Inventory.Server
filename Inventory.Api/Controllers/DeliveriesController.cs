@@ -23,7 +23,7 @@ public class DeliveriesController : ODataController
 
     [EnableQuery]
     [HttpGet]
-    //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager}")]
+    //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
     public IQueryable<Delivery> Get()
     {
         return _deliveryBusiness.GetAllDeliveriesAsync();
@@ -31,7 +31,7 @@ public class DeliveriesController : ODataController
 
     [EnableQuery]
     [HttpGet("{key}")]
-    //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager}")]
+    //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
     public async Task<IActionResult> Get([FromODataUri] int key)
     {
         var delivery = await _deliveryBusiness.GetDeliveryByIdAsync(key);
@@ -41,7 +41,7 @@ public class DeliveriesController : ODataController
     }
 
     [HttpPost]
-    //[Authorize(Roles = CustomRoles.WarehouseManager)]
+    [Authorize(Roles = $"{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
     public async Task<IActionResult> Post([FromBody] CreateDeliveryDto dto)
     {
         var created = await _deliveryBusiness.CreateDeliveryAsync(dto);
@@ -49,7 +49,7 @@ public class DeliveriesController : ODataController
     }
 
     [HttpPut("{key}")]
-    //[Authorize(Roles = CustomRoles.WarehouseManager)]
+    [Authorize(Roles = $"{CustomRoles.WarehouseManager},{CustomRoles.Admin},{CustomRoles.DeliveryStaff}")]
     public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateDeliveryDto dto)
     {
         var updated = await _deliveryBusiness.UpdateDeliveryAsync(dto, key);

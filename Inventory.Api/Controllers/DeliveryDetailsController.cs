@@ -42,7 +42,7 @@ public class DeliveryDetailsController : ODataController
     }*/
 
     [HttpPost]
-    //[Authorize(Roles = CustomRoles.WarehouseManager)]
+    [Authorize(Roles = $"{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
     public async Task<IActionResult> Post([FromBody] DeliveryDetailCreateDto dto)
     {
         var entity = _mapper.Map<DeliveryDetail>(dto);
@@ -51,7 +51,7 @@ public class DeliveryDetailsController : ODataController
     }
 
     [HttpPut("{key}")]
-    //[Authorize(Roles = CustomRoles.WarehouseManager)]
+    [Authorize(Roles = $"{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
     public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] DeliveryDetailUpdateDto dto)
     {
         var entity = _mapper.Map<DeliveryDetail>(dto);
@@ -61,7 +61,7 @@ public class DeliveryDetailsController : ODataController
     }
 
     [HttpDelete("{key}")]
-   // [Authorize(Roles = CustomRoles.WarehouseManager)]
+    [Authorize(Roles = $"{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
     public async Task<IActionResult> Delete([FromODataUri] int key)
     {
         await _deliveryDetailBusiness.DeleteDeliveryDetailAsync(key);

@@ -22,7 +22,7 @@ public class CustomersController : ODataController
 
     [EnableQuery]
     [HttpGet]
-   // [Authorize(Roles = $"{CustomRoles.Admin},{CustomRoles.SalesStaff}")]
+    //[Authorize(Roles = $"{CustomRoles.Admin},{CustomRoles.SalesStaff}, {CustomRoles.WarehouseManager}")]
     public IQueryable<Customer> Get()
     {
         return _customerBusiness.GetAllCustomersAsync();
@@ -31,7 +31,7 @@ public class CustomersController : ODataController
 
     [EnableQuery]
     [HttpGet("{key}")]
-    //[Authorize(Roles = $"{CustomRoles.Admin},{CustomRoles.SalesStaff}")]
+    //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
     public async Task<IActionResult> Get([FromODataUri] int key)
     {
         var customer = await _customerBusiness.GetCustomerByIdAsync(key);
@@ -41,7 +41,7 @@ public class CustomersController : ODataController
     }
 
     [HttpPost]
-    //[Authorize(Roles = CustomRoles.Admin)]
+    [Authorize(Roles = CustomRoles.Admin)]
     public async Task<IActionResult> Post([FromBody] CreateCustomerDto dto)
     {
         var entity = _mapper.Map<Customer>(dto);
@@ -50,7 +50,7 @@ public class CustomersController : ODataController
     }
 
     [HttpPut("{key}")]
-    //[Authorize(Roles = CustomRoles.Admin)]
+    [Authorize(Roles = CustomRoles.Admin)]
     public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateCustomerDto dto)
     {
         var entity = _mapper.Map<Customer>(dto);
@@ -60,7 +60,7 @@ public class CustomersController : ODataController
     }
 
     [HttpDelete("{key}")]
-    //[Authorize(Roles = CustomRoles.Admin)]
+    [Authorize(Roles = CustomRoles.Admin)]
     public async Task<IActionResult> Delete([FromODataUri] int key)
     {
         await _customerBusiness.DeleteCustomerAsync(key);

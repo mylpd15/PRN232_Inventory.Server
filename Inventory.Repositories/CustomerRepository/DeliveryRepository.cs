@@ -32,6 +32,7 @@ public class DeliveryRepository : GenericRepository<Delivery>, IDeliveryReposito
             .Include(d => d.Customer)
             .Include(d => d.DeliveryDetails)
                 .ThenInclude(dd => dd.Product);
+                    //.ThenInclude(p => p.Prices);
     }
 
 
@@ -51,6 +52,7 @@ public async Task<Delivery> GetByDeliveryIdAsync(int deliveryId)
         .Include(d => d.Customer)
         .Include(d => d.DeliveryDetails)
             .ThenInclude(dd => dd.Product)
+            .ThenInclude(p => p.Prices)
         .FirstOrDefaultAsync(d => d.DeliveryID == deliveryId);
 }
 

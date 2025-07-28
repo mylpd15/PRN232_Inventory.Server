@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WareSync.Api.DTOs;
+namespace WareSync.Api;
 public class InventoryDto
 {
     [Key]
@@ -13,4 +13,6 @@ public class InventoryDto
     public string? ProductName { get; set; }
     public int WarehouseID { get; set; }
     public string? WarehouseName { get; set; }
-} 
+    public List<InventoryLogDto> InventoryLogs { get; set; } = new();
+
+}
