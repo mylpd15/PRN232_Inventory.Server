@@ -23,7 +23,7 @@ public class ProviderBusiness : IProviderBusiness
         if (provider == null)
             throw new Exception($"Provider with ID {providerId} not found.");
         
-        _providerRepository.Remove(provider);
+        await _providerRepository.Remove(provider);
         await _providerRepository.SaveChangesAsync();
     }
 

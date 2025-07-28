@@ -38,7 +38,7 @@ public class UserBusiness : IUserBusiness
     {
         var user = await _userRepository.GetByIdAsync(userId);
         if (user != null)
-            _userRepository.Remove(user);
+          await _userRepository.Remove(user);
     }
     public async Task<AppUser?> DisableUserAsync(Guid id)
     {

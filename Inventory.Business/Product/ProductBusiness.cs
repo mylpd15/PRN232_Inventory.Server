@@ -64,7 +64,7 @@ public class ProductBusiness : IProductBusiness
     {
         var product = await _productRepository.GetByIdAsync(productId);
         if (product != null)
-            _productRepository.Remove(product);
+            await _productRepository.Remove(product);
     }
     public async Task<Product?> GetProductByIdAsync(int productId)
     {
