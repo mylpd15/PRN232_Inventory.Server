@@ -31,8 +31,19 @@ public class InventoryBusiness : IInventoryBusiness
         var old = await _inventoryRepository.GetByIdAsync(inventory.InventoryID) ?? throw new KeyNotFoundException($"Inventory {inventory.InventoryID} not existed");
 
         _inventoryRepository.Detach(old);
+        var oldQty = old.QuantityAvailable;
+        var newQty = inventory.QuantityAvailable;
+        var diff = newQty - oldQty;
 
-        var diff = inventory.QuantityAvailable - (old?.QuantityAvailable ?? 0);
+        //  Check newQty beetween  [min, max]
+        if (newQty < inventory.MinimumStockLevel
+            || newQty > inventory.MaximumStockLevel)
+        {
+
+            throw new InvalidOperationException(
+            $"Quantity must be between {inventory.MinimumStockLevel} and {inventory.MaximumStockLevel}.");
+
+        }
 
         //old.QuantityAvailable = inventory.QuantityAvailable;
         //old.MinimumStockLevel = inventory.MinimumStockLevel;
@@ -59,7 +70,7 @@ public class InventoryBusiness : IInventoryBusiness
     {
         var inventory = await _inventoryRepository.GetByIdAsync(inventoryId);
         if (inventory != null)
-            _inventoryRepository.Remove(inventory);
+           await _inventoryRepository.Remove(inventory);
     }
     public async Task<Inventory?> GetInventoryByIdAsync(int inventoryId)
     {
@@ -85,4 +96,4 @@ public class InventoryBusiness : IInventoryBusiness
     {
         return await _inventoryRepository.GetByProductAndWarehouseAsync(productId, warehouseId);
     }
-} 
+}

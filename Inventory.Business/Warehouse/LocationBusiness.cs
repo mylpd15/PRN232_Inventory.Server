@@ -23,7 +23,7 @@ public class LocationBusiness : ILocationBusiness
     {
         var location = await _locationRepository.GetByIdAsync(locationId);
         if (location != null)
-            _locationRepository.Remove(location);
+           await _locationRepository.Remove(location);
     }
     public async Task<Location?> GetLocationByIdAsync(int locationId)
     {

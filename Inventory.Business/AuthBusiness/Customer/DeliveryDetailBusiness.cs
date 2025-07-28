@@ -150,8 +150,8 @@ public class DeliveryDetailBusiness : IDeliveryDetailBusiness
                     inventory.QuantityAvailable += detail.DeliveryQuantity;
                     await _inventoryBusiness.UpdateInventoryAsync(inventory);
                 }
-                _deliveryDetailRepository.Remove(detail);
-                _deliveryDetailRepository.SaveChangesAsync();
+                await _deliveryDetailRepository.Remove(detail);
+                await _deliveryDetailRepository.SaveChangesAsync();
             }
             catch
             {

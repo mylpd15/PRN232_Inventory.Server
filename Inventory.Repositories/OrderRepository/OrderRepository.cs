@@ -5,10 +5,21 @@ namespace WareSync.Repositories;
 public class OrderRepository : GenericRepository<Order>, IOrderRepository
 {
     public OrderRepository(DataContext context) : base(context) { }
-    
+
+
+    public async Task<IEnumerable<Order>> GetAllOrdersWithProviderAndWarehouse()
+    {
+        return await _context.Orders
+            .Include(o => o.Provider)
+            .Include(o => o.Warehouse)
+            .Include(o => o.OrderDetails)
+            .ToListAsync();
+    }
     public async Task<Order?> GetByIdWithDetailsAsync(int orderId)
     {
         var order = await _context.Orders
+            .Include(o => o.Provider)
+            .Include(o => o.Warehouse)
             .Include(o => o.OrderDetails)
             .FirstOrDefaultAsync(o => o.OrderID == orderId);
             

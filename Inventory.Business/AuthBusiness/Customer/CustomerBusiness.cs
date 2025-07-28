@@ -55,7 +55,7 @@ public class CustomerBusiness : ICustomerBusiness
             throw new InvalidOperationException($"Cannot delete customer with ID {customerId} because they have associated deliveries.");
         }
 
-         _customerRepository.Remove(customer);
+          await _customerRepository.Remove(customer);
         await _customerRepository.SaveChangesAsync();
     }
 
