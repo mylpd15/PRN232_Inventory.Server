@@ -1,4 +1,4 @@
-namespace WareSync.Api.DTOs;
+namespace WareSync.Business;
 
 public class UpdateOrderStatusDto
 {
