@@ -52,7 +52,6 @@ public class MappingProfile : Profile
           );
         CreateMap<CreateProductDto, Product>();
         CreateMap<UpdateProductDto, Product>();
-        //CreateMap<CreateProductWithPriceDto, Product>();
 
 
         //ProductPrice Mapping

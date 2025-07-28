@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WareSync.Api.DTOs
+namespace WareSync.Api
 {
     public class ProductPriceDto
     {
