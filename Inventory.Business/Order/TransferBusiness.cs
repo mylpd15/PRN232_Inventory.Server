@@ -25,7 +25,7 @@ public class TransferBusiness : ITransferBusiness
         var transfer = await _transferRepository.GetByIdAsync(transferId);
         if (transfer != null)
         {
-            _transferRepository.Remove(transfer);
+            await _transferRepository.Remove(transfer);
             await _transferRepository.SaveChangesAsync();
         }
     }

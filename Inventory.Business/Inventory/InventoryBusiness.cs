@@ -70,7 +70,7 @@ public class InventoryBusiness : IInventoryBusiness
     {
         var inventory = await _inventoryRepository.GetByIdAsync(inventoryId);
         if (inventory != null)
-            _inventoryRepository.Remove(inventory);
+           await _inventoryRepository.Remove(inventory);
     }
     public async Task<Inventory?> GetInventoryByIdAsync(int inventoryId)
     {

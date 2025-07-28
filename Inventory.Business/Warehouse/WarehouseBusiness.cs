@@ -23,7 +23,7 @@ public class WarehouseBusiness : IWarehouseBusiness
     {
         var warehouse = await _warehouseRepository.GetByIdAsync(warehouseId);
         if (warehouse != null)
-            _warehouseRepository.Remove(warehouse);
+           await _warehouseRepository.Remove(warehouse);
     }
     public async Task<Warehouse?> GetWarehouseByIdAsync(int warehouseId)
     {

@@ -25,7 +25,7 @@ public class OrderDetailBusiness : IOrderDetailBusiness
         var detail = await _orderDetailRepository.GetByIdAsync(orderDetailId);
         if (detail != null)
         {
-            _orderDetailRepository.Remove(detail);
+            await _orderDetailRepository.Remove(detail);
             await _orderDetailRepository.SaveChangesAsync();
         }
     }

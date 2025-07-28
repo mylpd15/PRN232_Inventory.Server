@@ -67,6 +67,10 @@ public class ProductsController : ODataController
     [HttpDelete("{key}")]
     public async Task<IActionResult> Delete([FromODataUri] int key)
     {
+        var existing = await _productBusiness.GetProductByIdAsync(key);
+        if (existing == null)
+            return NotFound();
+
         await _productBusiness.DeleteProductAsync(key);
         return NoContent();
     }

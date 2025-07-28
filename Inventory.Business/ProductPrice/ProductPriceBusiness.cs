@@ -29,7 +29,7 @@ namespace WareSync.Business
         {
             var productPrice = await _productPriceRepository.GetByIdAsync(productPriceId);
             if (productPrice != null)
-                _productPriceRepository.Remove(productPrice);
+               await _productPriceRepository.Remove(productPrice);
         }
         public async Task<ProductPrice?> GetProductPriceByIdAsync(int productId)
         {
