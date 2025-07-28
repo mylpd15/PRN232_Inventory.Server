@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WareSync.Repositories;
 
@@ -11,9 +12,11 @@ using WareSync.Repositories;
 namespace WareSync.Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250727112522_AddOrderStatusAndRejectReason")]
+    partial class AddOrderStatusAndRejectReason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,14 +350,9 @@ namespace WareSync.Repositories.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int>("WarehouseID")
-                        .HasColumnType("int");
-
                     b.HasKey("OrderID");
 
                     b.HasIndex("ProviderID");
-
-                    b.HasIndex("WarehouseID");
 
                     b.ToTable("Orders");
                 });
@@ -674,15 +672,7 @@ namespace WareSync.Repositories.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WareSync.Domain.Warehouse", "Warehouse")
-                        .WithMany()
-                        .HasForeignKey("WarehouseID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Provider");
-
-                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("WareSync.Domain.OrderDetail", b =>
@@ -715,7 +705,7 @@ namespace WareSync.Repositories.Migrations
                     b.HasOne("WareSync.Domain.Warehouse", "Warehouse")
                         .WithMany("Transfers")
                         .HasForeignKey("WarehouseID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("OrderDetail");

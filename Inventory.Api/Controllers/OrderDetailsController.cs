@@ -8,7 +8,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.OData.Formatter;
 
 namespace WareSync.Api;
-[Route("odata/[controller]")]
+
+[Route("api/[controller]")]
 public class OrderDetailsController : ODataController
 {
     private readonly IOrderDetailBusiness _orderDetailBusiness;
@@ -26,6 +27,7 @@ public class OrderDetailsController : ODataController
         var dtos = _mapper.Map<IEnumerable<OrderDetailDto>>(entities);
         return Ok(dtos);
     }
+
     [EnableQuery]
     [HttpGet("{key}")]
     public async Task<IActionResult> Get([FromODataUri] int key)
@@ -35,21 +37,28 @@ public class OrderDetailsController : ODataController
         var dto = _mapper.Map<OrderDetailDto>(entity);
         return Ok(dto);
     }
+
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] OrderDetailDto dto)
+    public async Task<IActionResult> Post([FromBody] WareSync.Business.CreateOrderDetailDto dto)
     {
         var entity = _mapper.Map<OrderDetail>(dto);
         var created = await _orderDetailBusiness.CreateOrderDetailAsync(entity);
-        return Created(created);
+        var result = _mapper.Map<OrderDetailDto>(created);
+        return CreatedAtAction(nameof(Get), new { key = result.OrderDetailID }, result);
     }
+
     [HttpPut("{key}")]
-    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] OrderDetailDto dto)
+    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateOrderDetailDto dto)
     {
+        if (key != dto.OrderDetailID)
+            return BadRequest("Key mismatch");
+        
         var entity = _mapper.Map<OrderDetail>(dto);
-        entity.OrderDetailID = key;
         var updated = await _orderDetailBusiness.UpdateOrderDetailAsync(entity);
-        return Updated(updated);
+        var result = _mapper.Map<OrderDetailDto>(updated);
+        return Ok(result);
     }
+
     [HttpDelete("{key}")]
     public async Task<IActionResult> Delete([FromODataUri] int key)
     {

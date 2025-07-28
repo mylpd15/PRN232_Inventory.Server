@@ -20,6 +20,7 @@ using WareSync.Business;
 using AutoMapper;
 using WareSync.Repositories.ProductRepository;
 using WareSync.Api.DTOs;
+using WareSync.Repositories.ProviderRepository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -43,6 +44,10 @@ IEdmModel GetEdmModel()
     builder.EntitySet<ProductDto>("Products");
     builder.EntitySet<InventoryDto>("Inventories");
     builder.EntitySet<InventoryLogDto>("InventoryLogs");
+    builder.EntitySet<ProviderDto>("Providers");
+    builder.EntitySet<OrderDto>("Orders");
+    builder.EntitySet<OrderDetailDto>("OrderDetails");
+    builder.EntitySet<TransferDto>("Transfers");
     // Thêm các entity khác nếu cần
     return builder.GetEdmModel();
 }
@@ -163,6 +168,19 @@ builder.Services.AddScoped<IInventoryBusiness, InventoryBusiness>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IInventoryLogBusiness, InventoryLogBusiness>();
 builder.Services.AddScoped<IInventoryLogRepository, InventoryLogRepository>();
+builder.Services.AddScoped<IOrderBusiness, OrderBusiness>(provider =>
+{
+    var orderRepo = provider.GetRequiredService<IOrderRepository>();
+    var orderDetailRepo = provider.GetRequiredService<IOrderDetailRepository>();
+    var inventoryBusiness = provider.GetRequiredService<IInventoryBusiness>();
+    return new OrderBusiness(orderRepo, orderDetailRepo, inventoryBusiness);
+});
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderDetailBusiness, OrderDetailBusiness>();
+builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+builder.Services.AddScoped<IProviderBusiness, ProviderBusiness>();
+builder.Services.AddScoped<IProviderRepository, ProviderRepository>();
+
 
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));

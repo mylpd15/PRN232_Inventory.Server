@@ -99,13 +99,19 @@ public class DataContext : DbContext
             .HasMany(w => w.Transfers)
             .WithOne(t => t.Warehouse)
             .HasForeignKey(t => t.WarehouseID)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
         // Inventory - InventoryLog: 1 - nhiều
         modelBuilder.Entity<Inventory>()
             .HasMany(i => i.InventoryLogs)
             .WithOne(l => l.Inventory)
             .HasForeignKey(l => l.InventoryID)
             .OnDelete(DeleteBehavior.Cascade);
+        // Order - Warehouse: many-to-one, restrict delete
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Warehouse)
+            .WithMany()
+            .HasForeignKey(o => o.WarehouseID)
+            .OnDelete(DeleteBehavior.Restrict);
 
     }
     public DbSet<AppUser> AppUsers { get; set; }
