@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using WareSync.Api.DTOs;
 using WareSync.Business;
-using WareSync.Business.Provider.ProductWithPrice.DTOs;
 using WareSync.Domain;
 
 namespace WareSync.Api;
