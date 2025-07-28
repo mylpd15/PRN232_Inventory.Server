@@ -52,7 +52,6 @@ public class MappingProfile : Profile
           );
         CreateMap<CreateProductDto, Product>();
         CreateMap<UpdateProductDto, Product>();
-        //CreateMap<CreateProductWithPriceDto, Product>();
 
 
         //ProductPrice Mapping
@@ -63,7 +62,8 @@ public class MappingProfile : Profile
         // Inventory Mapping
         CreateMap<Inventory, InventoryDto>()
             .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product!.ProductName))
-            .ForMember(dest => dest.WarehouseName, opt => opt.MapFrom(src => src.Warehouse!.WarehouseName));
+            .ForMember(dest => dest.WarehouseName, opt => opt.MapFrom(src => src.Warehouse!.WarehouseName))
+              .ForMember(d => d.InventoryLogs, o => o.MapFrom(s => s.InventoryLogs)); 
 
         CreateMap<CreateInventoryDto, Inventory>();
         CreateMap<UpdateInventoryDto, Inventory>();
@@ -112,6 +112,14 @@ public class MappingProfile : Profile
 
       
 
+        //Location Mapping
+        CreateMap<Location, LocationDto>();
+        CreateMap<CreateLocationDto, Location>();
+        CreateMap<LocationDto, Location>();
 
+        //Warehouses Mapping
+        CreateMap<Warehouse, WarehouseDto>();
+        CreateMap<CreateWarehouseDto, Warehouse>();
+        CreateMap<WarehouseDto, Warehouse>();
     }
 }

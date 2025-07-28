@@ -11,6 +11,7 @@ namespace WareSync.Domain.Enums
         Pending = 0,
         Shipped = 1,
         Delivered = 2,
-        Cancelled = 3
+        Cancelled = 3,
+        Accepted = 4,
     }
 }

@@ -36,16 +36,24 @@ public class WarehousesController : ODataController
         return Ok(dto);
     }
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] WarehouseDto warehouseDto)
+    public async Task<IActionResult> Post([FromBody] CreateWarehouseDto warehouseDto)
     {
         var warehouse = _mapper.Map<Warehouse>(warehouseDto);
         var created = await _warehouseBusiness.CreateWarehouseAsync(warehouse);
         return Created(created);
     }
-
-    //[HttpPut]
-    //public async Task<IActionResult> Put([FromRoute] )
-    //{
-
-    //}
-} 
+    [HttpPut("{key}")]
+    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] WarehouseDto dto)
+    {
+        var entity = _mapper.Map<Warehouse>(dto);
+        entity.WarehouseID = key;
+        var updated = await _warehouseBusiness.UpdateWarehouseAsync(entity);
+        return Updated(updated);
+    }
+    [HttpDelete("{key}")]
+    public async Task<IActionResult> Delete([FromODataUri] int key)
+    {
+        await _warehouseBusiness.DeleteWarehouseAsync(key);
+        return NoContent();
+    }
+}

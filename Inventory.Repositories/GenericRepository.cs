@@ -46,7 +46,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         _dbSet.Remove(entity);
     }
-
+    public void Detach(T entity)
+    {
+        _context.Entry(entity).State = EntityState.Detached;
+    }
     public IQueryable<T> Query()
     {
         return _dbSet.AsQueryable();

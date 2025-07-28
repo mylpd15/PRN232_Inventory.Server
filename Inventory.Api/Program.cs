@@ -48,8 +48,8 @@ IEdmModel GetEdmModel()
     builder.EntitySet<OrderDto>("Orders");
     builder.EntitySet<OrderDetailDto>("OrderDetails");
     builder.EntitySet<TransferDto>("Transfers");
+    builder.EntitySet<LocationDto>("Locations");
     builder.EntitySet<WarehouseDto>("Warehouses");
-
     // Thêm các entity khác nếu cần
     return builder.GetEdmModel();
 }
@@ -184,6 +184,10 @@ builder.Services.AddScoped<IOrderDetailBusiness, OrderDetailBusiness>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IProviderBusiness, ProviderBusiness>();
 builder.Services.AddScoped<IProviderRepository, ProviderRepository>();
+builder.Services.AddScoped<ILocationBusiness, LocationBusiness>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<IWarehouseBusiness, WarehouseBusiness>();
+builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
 
 builder.Services.AddScoped<IWarehouseBusiness, WarehouseBusiness>();
 builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
