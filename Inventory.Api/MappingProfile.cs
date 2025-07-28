@@ -78,11 +78,12 @@ public class MappingProfile : Profile
         CreateMap<UpdateProviderDto, Provider>();
 
         // Order Mapping
+        // Order -> OrderDto
         CreateMap<Order, OrderDto>()
-            .ForMember(dest => dest.ProviderName, opt => opt.MapFrom(src => src.Provider!.ProviderName))
+            .ForMember(dest => dest.Provider, opt => opt.MapFrom(src => src.Provider))  // Map entire Provider object
+            .ForMember(dest => dest.Warehouse, opt => opt.MapFrom(src => src.Warehouse)) // Map entire Warehouse object
             .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
-            .ForMember(dest => dest.WarehouseId, opt => opt.MapFrom(src => src.WarehouseID))
             .ForMember(dest => dest.RejectReason, opt => opt.MapFrom(src => src.RejectReason));
         CreateMap<WareSync.Business.CreateOrderDto, Order>()
             .ForMember(dest => dest.WarehouseID, opt => opt.MapFrom(src => src.WarehouseId));
@@ -103,6 +104,13 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.WarehouseName, opt => opt.MapFrom(src => src.Warehouse!.WarehouseName));
         CreateMap<CreateTransferDto, Transfer>();
         CreateMap<UpdateTransferDto, Transfer>();
+
+        // WarehouseDto -> Warehouse
+        CreateMap<Warehouse, WarehouseDto>()
+           .ForMember(dest => dest.LocationName, opt => opt.MapFrom(src => src.Location != null ? src.Location.LocationName : null)); 
+        CreateMap<WarehouseDto, Warehouse>();
+
+      
 
         //Location Mapping
         CreateMap<Location, LocationDto>();

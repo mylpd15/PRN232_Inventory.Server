@@ -189,6 +189,9 @@ builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IWarehouseBusiness, WarehouseBusiness>();
 builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
 
+builder.Services.AddScoped<IWarehouseBusiness, WarehouseBusiness>();
+builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+
 
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
