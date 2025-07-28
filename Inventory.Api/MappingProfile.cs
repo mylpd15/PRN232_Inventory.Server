@@ -62,7 +62,8 @@ public class MappingProfile : Profile
         // Inventory Mapping
         CreateMap<Inventory, InventoryDto>()
             .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product!.ProductName))
-            .ForMember(dest => dest.WarehouseName, opt => opt.MapFrom(src => src.Warehouse!.WarehouseName));
+            .ForMember(dest => dest.WarehouseName, opt => opt.MapFrom(src => src.Warehouse!.WarehouseName))
+              .ForMember(d => d.InventoryLogs, o => o.MapFrom(s => s.InventoryLogs)); 
 
         CreateMap<CreateInventoryDto, Inventory>();
         CreateMap<UpdateInventoryDto, Inventory>();

@@ -13,4 +13,6 @@ public class InventoryDto
     public string? ProductName { get; set; }
     public int WarehouseID { get; set; }
     public string? WarehouseName { get; set; }
-} 
+    public List<InventoryLogDto> InventoryLogs { get; set; } = new();
+
+}
