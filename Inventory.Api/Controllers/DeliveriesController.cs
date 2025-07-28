@@ -23,7 +23,7 @@ public class DeliveriesController : ODataController
 
     [EnableQuery]
     [HttpGet]
-    [Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
+    //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
     public IQueryable<Delivery> Get()
     {
         return _deliveryBusiness.GetAllDeliveriesAsync();
@@ -31,7 +31,7 @@ public class DeliveriesController : ODataController
 
     [EnableQuery]
     [HttpGet("{key}")]
-    [Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
+    //[Authorize(Roles = $"{CustomRoles.DeliveryStaff},{CustomRoles.WarehouseManager},{CustomRoles.Admin}")]
     public async Task<IActionResult> Get([FromODataUri] int key)
     {
         var delivery = await _deliveryBusiness.GetDeliveryByIdAsync(key);
