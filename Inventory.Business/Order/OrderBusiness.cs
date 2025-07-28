@@ -86,11 +86,11 @@ public class OrderBusiness : IOrderBusiness
     }
     public async Task<Order?> GetOrderByIdAsync(int orderId)
     {
-        return await _orderRepository.GetByIdAsync(orderId);
+        return await _orderRepository.GetByIdWithDetailsAsync(orderId);
     }
     public async Task<IEnumerable<Order>> GetAllOrdersAsync()
     {
-        return await _orderRepository.GetAllAsync();
+        return await _orderRepository.GetAllOrdersWithProviderAndWarehouse();
     }
     // CRUD cũ giữ lại cho các trường hợp khác
     public async Task<Order> CreateOrderAsync(Order order)

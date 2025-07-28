@@ -50,17 +50,17 @@ public class OrdersController : ODataController
     }
 
     [HttpPut("{key}")]
-
     public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateOrderDto dto)
     {
         if (key != dto.OrderID)
             return BadRequest("Key mismatch");
-        
+
         // Convert UpdateOrderDto to CreateOrderDto for the business layer
         var createDto = new WareSync.Business.CreateOrderDto
         {
             OrderDate = dto.OrderDate,
             ProviderID = dto.ProviderID,
+            WarehouseId = dto.WarehouseId, // Ensure WarehouseId is updated
             OrderDetails = dto.OrderDetails.Select(od => new WareSync.Business.CreateOrderDetailDto
             {
                 ProductID = od.ProductID,
@@ -68,11 +68,12 @@ public class OrdersController : ODataController
                 ExpectedDate = od.ExpectedDate
             }).ToList()
         };
-        
+
         var updated = await _orderBusiness.UpdateOrderAsync(key, createDto);
         var result = _mapper.Map<OrderDto>(updated);
         return Ok(result);
     }
+
 
     [HttpPatch("{orderId}/status")]
     public async Task<IActionResult> UpdateStatus([FromRoute] int orderId, [FromBody] UpdateOrderStatusDto dto)

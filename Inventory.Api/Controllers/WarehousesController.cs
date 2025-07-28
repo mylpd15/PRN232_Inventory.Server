@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.OData.Formatter;
 using WareSync.Domain;
 
 namespace WareSync.Api;
-[Route("odata/[controller]")]
+[Route("api/[controller]")]
 public class WarehousesController : ODataController
 {
     private readonly IWarehouseBusiness _warehouseBusiness;
