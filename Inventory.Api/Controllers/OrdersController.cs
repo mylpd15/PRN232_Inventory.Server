@@ -7,10 +7,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.OData.Formatter;
 using WareSync.Api;
 using WareSync.Domain;
+using WareSync.Domain.Enums;
 
 
 namespace WareSync.Api;
-[Route("odata/[controller]")]
+
+[Route("api/[controller]")]
 public class OrdersController : ODataController
 {
     private readonly IOrderBusiness _orderBusiness;
@@ -28,6 +30,7 @@ public class OrdersController : ODataController
         var dtos = _mapper.Map<IEnumerable<OrderDto>>(orders);
         return Ok(dtos);
     }
+
     [EnableQuery]
     [HttpGet("{key}")]
     public async Task<IActionResult> Get([FromODataUri] int key)
@@ -37,23 +40,50 @@ public class OrdersController : ODataController
         var dto = _mapper.Map<OrderDto>(order);
         return Ok(dto);
     }
+
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreateOrderDto dto)
+    public async Task<IActionResult> Post([FromBody] WareSync.Business.CreateOrderDto dto)
     {
-        var entity = _mapper.Map<Order>(dto);
-        var created = await _orderBusiness.CreateOrderAsync(entity);
+        var created = await _orderBusiness.CreateOrderAsync(dto);
         var result = _mapper.Map<OrderDto>(created);
-        return Created(result);
+        return CreatedAtAction(nameof(Get), new { key = result.OrderID }, result);
     }
+
     [HttpPut("{key}")]
-    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] CreateOrderDto dto)
+
+    public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateOrderDto dto)
     {
-        var entity = _mapper.Map<Order>(dto);
-        entity.OrderID = key;
-        var updated = await _orderBusiness.UpdateOrderAsync(entity);
+        if (key != dto.OrderID)
+            return BadRequest("Key mismatch");
+        
+        // Convert UpdateOrderDto to CreateOrderDto for the business layer
+        var createDto = new WareSync.Business.CreateOrderDto
+        {
+            OrderDate = dto.OrderDate,
+            ProviderID = dto.ProviderID,
+            OrderDetails = dto.OrderDetails.Select(od => new WareSync.Business.CreateOrderDetailDto
+            {
+                ProductID = od.ProductID,
+                OrderQuantity = od.OrderQuantity,
+                ExpectedDate = od.ExpectedDate
+            }).ToList()
+        };
+        
+        var updated = await _orderBusiness.UpdateOrderAsync(key, createDto);
         var result = _mapper.Map<OrderDto>(updated);
-        return Updated(result);
+        return Ok(result);
     }
+
+    [HttpPatch("{orderId}/status")]
+    public async Task<IActionResult> UpdateStatus([FromRoute] int orderId, [FromBody] UpdateOrderStatusDto dto)
+    {
+        if (!Enum.TryParse<OrderStatus>(dto.Status, true, out var newStatus))
+            return BadRequest("Invalid status value");
+        var updatedOrder = await _orderBusiness.UpdateOrderStatusAsync(orderId, newStatus, dto.RejectReason);
+        var resultDto = _mapper.Map<OrderDto>(updatedOrder);
+        return Ok(resultDto);
+    }
+
     [HttpDelete("{key}")]
     public async Task<IActionResult> Delete([FromODataUri] int key)
     {

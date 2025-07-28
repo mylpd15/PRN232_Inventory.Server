@@ -99,7 +99,7 @@ public class DataContext : DbContext
             .HasMany(w => w.Transfers)
             .WithOne(t => t.Warehouse)
             .HasForeignKey(t => t.WarehouseID)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
         // Inventory - InventoryLog: 1 - nhiều
         modelBuilder.Entity<Inventory>()
             .HasMany(i => i.InventoryLogs)

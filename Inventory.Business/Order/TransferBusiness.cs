@@ -17,13 +17,17 @@ public class TransferBusiness : ITransferBusiness
     public async Task<Transfer> UpdateTransferAsync(Transfer transfer)
     {
         await _transferRepository.UpdateAsync(transfer);
+        await _transferRepository.SaveChangesAsync();
         return transfer;
     }
     public async Task DeleteTransferAsync(int transferId)
     {
         var transfer = await _transferRepository.GetByIdAsync(transferId);
         if (transfer != null)
+        {
             _transferRepository.Remove(transfer);
+            await _transferRepository.SaveChangesAsync();
+        }
     }
     public async Task<Transfer?> GetTransferByIdAsync(int transferId)
     {

@@ -52,6 +52,10 @@ public class InventoryBusiness : IInventoryBusiness
     {
         return await _inventoryRepository.GetByIdAsync(inventoryId);
     }
+    public async Task<Inventory?> GetByProductAndWarehouseAsync(int productId, int warehouseId)
+    {
+        return await _inventoryRepository.GetByProductAndWarehouseAsync(productId, warehouseId);
+    }
     public async Task<IEnumerable<Inventory>> GetAllInventoriesAsync()
     {
         return await _inventoryRepository.GetAllAsync();

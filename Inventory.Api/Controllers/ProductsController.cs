@@ -35,6 +35,7 @@ public class ProductsController : ODataController
         var dto = _mapper.Map<ProductDto>(product);
         return Ok(dto);
     }
+
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CreateProductWithPriceDto productWithPriceDto)
     {
@@ -45,6 +46,7 @@ public class ProductsController : ODataController
         var resultDto = _mapper.Map<ProductDto>(created);   
         return Created(resultDto);
     }
+
     [HttpPut("{key}")]
     public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] UpdateProductDto productDto)
     {

@@ -1,4 +1,5 @@
-namespace WareSync.Business;
+namespace WareSync.Api.DTOs;
+
 public class CreateOrderDto
 {
     public DateTime OrderDate { get; set; }
@@ -6,6 +7,7 @@ public class CreateOrderDto
     public int WarehouseId { get; set; } // Added for warehouse reference
     public List<CreateOrderDetailDto> OrderDetails { get; set; } = new();
 }
+
 public class CreateOrderDetailDto
 {
     public int ProductID { get; set; }

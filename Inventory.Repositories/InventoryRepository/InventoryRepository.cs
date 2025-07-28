@@ -7,5 +7,8 @@ public class InventoryRepository : GenericRepository<Inventory>, IInventoryRepos
    
     public InventoryRepository(DataContext context) : base(context) { }
 
-   
+    public async Task<Inventory?> GetByProductAndWarehouseAsync(int productId, int warehouseId)
+    {
+        return await _context.Inventories.FirstOrDefaultAsync(i => i.ProductID == productId && i.WarehouseID == warehouseId);
+    }
 } 

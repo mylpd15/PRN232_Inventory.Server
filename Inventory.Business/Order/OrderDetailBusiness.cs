@@ -17,13 +17,17 @@ public class OrderDetailBusiness : IOrderDetailBusiness
     public async Task<OrderDetail> UpdateOrderDetailAsync(OrderDetail detail)
     {
         await _orderDetailRepository.UpdateAsync(detail);
+        await _orderDetailRepository.SaveChangesAsync();
         return detail;
     }
     public async Task DeleteOrderDetailAsync(int orderDetailId)
     {
         var detail = await _orderDetailRepository.GetByIdAsync(orderDetailId);
         if (detail != null)
+        {
             _orderDetailRepository.Remove(detail);
+            await _orderDetailRepository.SaveChangesAsync();
+        }
     }
     public async Task<OrderDetail?> GetOrderDetailByIdAsync(int orderDetailId)
     {
