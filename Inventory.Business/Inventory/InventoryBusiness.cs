@@ -61,7 +61,7 @@ public class InventoryBusiness : IInventoryBusiness
             InventoryID = inventory.InventoryID,
             ActionType = "Update",
             ChangedQuantity = diff,
-            Description = $"Updated Inventory from {old?.QuantityAvailable} → {inventory.QuantityAvailable}"
+            Description = oldQty != newQty ? $"Updated Inventory from {old?.QuantityAvailable} → {inventory.QuantityAvailable}" : "Updated Inventory without quantity change"
         });
 
         return inventory;
